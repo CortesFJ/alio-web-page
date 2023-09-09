@@ -1,11 +1,9 @@
-import { Product } from "@/core/product-repository/domain/product"
+import { ProductSet } from "@/app/product-detail/product-set"
 
-const mockedProduct: Product = {
+const mockedProductSet: ProductSet = {
   id: "1",
   name: "Sample Product",
-  price: { currency: "USD", amount: "20.00" },
   description: "This is a sample product description.",
-  imageUrl: "sample-image-url.jpg",
   variants: [
     {
       name: "Size",
@@ -16,16 +14,22 @@ const mockedProduct: Product = {
       options: ["Red", "Blue", "Green"],
     },
   ],
-  stock: {
+  stockInfo: {
     Size: {
       Small: {
         Color: {
-          Red: { availability: 1, price: { currency: "USD", amount: "20.00" } },
+          Red: {
+            imagesUrl: "sample-image-url.jpg",
+            availability: 1,
+            price: { currency: "USD", amount: "20.00" },
+          },
           Blue: {
+            imagesUrl: "sample-image-url.jpg",
             availability: 2,
             price: { currency: "USD", amount: "23.00" },
           },
           Green: {
+            imagesUrl: "sample-image-url.jpg",
             availability: 3,
             price: { currency: "USD", amount: "29.00" },
           },
@@ -33,12 +37,18 @@ const mockedProduct: Product = {
       },
       Medium: {
         Color: {
-          Red: { availability: 4, price: { currency: "USD", amount: "20.00" } },
+          Red: {
+            availability: 4,
+            price: { currency: "USD", amount: "20.00" },
+            imagesUrl: "sample-image-url.jpg",
+          },
           Blue: {
+            imagesUrl: "sample-image-url.jpg",
             availability: 5,
             price: { currency: "USD", amount: "23.00" },
           },
           Green: {
+            imagesUrl: "sample-image-url.jpg",
             availability: 6,
             price: { currency: "USD", amount: "30.00" },
           },
@@ -46,12 +56,18 @@ const mockedProduct: Product = {
       },
       Large: {
         Color: {
-          Red: { availability: 7, price: { currency: "USD", amount: "22.00" } },
+          Red: {
+            imagesUrl: "sample-image-url.jpg",
+            availability: 7,
+            price: { currency: "USD", amount: "22.00" },
+          },
           Blue: {
+            imagesUrl: "sample-image-url.jpg",
             availability: 8,
             price: { currency: "USD", amount: "31.00" },
           },
           Green: {
+            imagesUrl: "sample-image-url.jpg",
             availability: 9,
             price: { currency: "USD", amount: "40.00" },
           },
@@ -60,4 +76,4 @@ const mockedProduct: Product = {
     },
   },
 }
-export default mockedProduct
+export default mockedProductSet

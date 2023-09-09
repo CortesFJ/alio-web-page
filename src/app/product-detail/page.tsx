@@ -1,27 +1,26 @@
 "use client"
-import { Product } from "@/core/product-repository/domain/product"
+import { ProductSet } from "./product-set"
 import { useEffect, useState } from "react"
 import VariantSelection from "./variant-selection"
-import mockedProduct from "../../../testing/mocks/mocked-product"
+import mockedProductSet from "../../../testing/mocks/app/mocked-product-set"
 
 interface productDetailProps {
-  product: Product
+  product: ProductSet
   defaultVariants: Record<string, string> | null
 }
 
 const ProductDetail: React.FC<productDetailProps> = ({
-  product = mockedProduct, // default values just for testing purposes.
+  product = mockedProductSet, // default values just for testing purposes.
   defaultVariants = { Size: "Small", Color: "Red" },
 }) => {
-  const defaultPrice = product.price?.amount ?? null
-
-  const [price, setPrice] = useState(defaultPrice)
-  const [stock, setStock] = useState(NaN)
+  const [price, setPrice] = useState("")
+  const [stock, setStock] = useState("")
+  const [imagesUrl, setImagesUrl] = useState("")
   const [selectedVariants, setSelectedVariants] = useState<
     Record<string, string>
   >({})
 
-  const updatePriceAndStock = (
+  const updateDisplayedVariant = (
     stockDetail: any,
     selectedVariants: Record<string, string>
   ) => {
@@ -33,6 +32,7 @@ const ProductDetail: React.FC<productDetailProps> = ({
           if (deeperStockDetail.price) {
             setPrice(deeperStockDetail.price.amount)
             setStock(deeperStockDetail.availability)
+            setImagesUrl(deeperStockDetail.imagesUrl)
             return
           }
           findPriceAndStock(deeperStockDetail)
@@ -45,13 +45,13 @@ const ProductDetail: React.FC<productDetailProps> = ({
   const setVariant = ({ name, option }: Record<string, string>) => {
     const newSelectedVariants = { ...selectedVariants, [name]: option }
     setSelectedVariants(newSelectedVariants)
-    updatePriceAndStock(product.stock, newSelectedVariants)
+    updateDisplayedVariant(product.stockInfo, newSelectedVariants)
   }
 
   useEffect(() => {
     if (defaultVariants) {
       setSelectedVariants(defaultVariants)
-      updatePriceAndStock(product.stock, defaultVariants)
+      updateDisplayedVariant(product.stockInfo, defaultVariants)
     }
   }, [])
 
@@ -63,7 +63,7 @@ const ProductDetail: React.FC<productDetailProps> = ({
       <p>{product.description}</p>
       <p>Price: ${price}</p>
       <p>In Stock: {stock}</p>
-      <img src={product.imageUrl} alt={product.name} />
+      <img src={imagesUrl} alt={product.name} />
       <VariantSelection
         variants={product.variants}
         manageSelectedOption={{ selectedVariants, setVariant }}

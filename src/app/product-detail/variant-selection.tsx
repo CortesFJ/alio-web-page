@@ -1,7 +1,7 @@
-import { Variant } from "@/core/product-repository/domain/product"
+import { VariantSet } from "./product-set"
 
 export interface VariantSelectionProps {
-  variants: Variant[] | undefined
+  variants: VariantSet[] | undefined
   manageSelectedOption: Record<string, any>
 }
 

@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react"
 
 import ProductDetail from "@/app/product-detail/page"
-import mockedProduct from "../../../mocks/mocked-product"
+import mockedProduct from "../../../mocks/app/mocked-product-set"
 
 describe("Product Detail Page", () => {
   const renderProductDetail = () =>
@@ -30,8 +30,7 @@ describe("Product Detail Page", () => {
 
   it("displays the product price", () => {
     renderProductDetail()
-    const price = mockedProduct.price?.amount ?? "mockedProduct has not price"
-
+    const price = "20.00"
     const productPriceElement = screen.getByText(`Price: $${price}`)
     expect(productPriceElement).toBeInTheDocument()
   })
