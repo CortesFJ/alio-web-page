@@ -13,5 +13,5 @@ export type Product = {
   imagesUrl: string
   variants?: Variant[]
   category?: Category
-  stock: string
+  stock: number
 }

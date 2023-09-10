@@ -1,4 +1,4 @@
-import { Product } from "@/core/product-repository/domain/product"
+import { Product } from "@/core/types"
 
 const mockedProduct: Product = {
   id: "1",
@@ -16,6 +16,6 @@ const mockedProduct: Product = {
       option: "Red",
     },
   ],
-  stock: "15",
+  stock: 15,
 }
 export default mockedProduct
