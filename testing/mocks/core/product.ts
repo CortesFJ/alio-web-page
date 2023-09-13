@@ -1,4 +1,4 @@
-import { Product } from "@/core/types"
+import { Product } from "@/types"
 
 const mockedProduct: Product = {
   id: "1",
@@ -6,16 +6,10 @@ const mockedProduct: Product = {
   description: "This is a sample product description.",
   price: { currency: "USD", amount: "23.00" },
   imagesUrl: "sample-image-url.jpg",
-  variants: [
-    {
-      name: "Size",
-      option: "Small",
-    },
-    {
-      name: "Color",
-      option: "Red",
-    },
-  ],
+  variants: {
+    Size: "Small",
+    Color: "Red",
+  },
   stock: 15,
 }
 export default mockedProduct

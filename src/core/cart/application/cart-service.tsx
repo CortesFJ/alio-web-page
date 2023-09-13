@@ -1,18 +1,19 @@
 import { Cart, CartState, CartItem } from "@/core/cart/domain/cart"
-import { Product } from "@/core/types"
+import { Product, Price } from "@/types"
 
 export class CartService implements Cart {
-  private cartState: CartState = {
+  private state: CartState = {
     items: [],
     totalPrice: { currency: "USD", amount: "0" },
   }
+
   calculateTotalPrice = (cartItems: CartItem[]): Price => {
-    const currency = this.cartState.totalPrice.currency
+    const currency = this.state.totalPrice.currency
     let totalPrice = 0
     if (cartItems.length) {
       totalPrice = cartItems.reduce(
-        (total, item) =>
-          total + parseFloat(item.product.price.amount) * item.quantity,
+        (acc, item) =>
+          acc + parseFloat(item.product.price.amount) * item.quantity,
         0
       )
     }
@@ -24,14 +25,14 @@ export class CartService implements Cart {
 
   updateState = (updatedItems: CartItem[]): void => {
     const newTotalPrice = this.calculateTotalPrice(updatedItems)
-    this.cartState = {
+    this.state = {
       items: updatedItems,
       totalPrice: newTotalPrice,
     }
   }
 
   add(product: Product, quantity: number = 1): void {
-    const updatedItems: CartItem[] = [...this.cartState.items]
+    const updatedItems: CartItem[] = [...this.state.items]
     const existingItemIndex = updatedItems.findIndex(
       (item) => item.product.id === product.id
     )
@@ -40,15 +41,16 @@ export class CartService implements Cart {
       updatedItems[existingItemIndex].quantity = quantity
     } else {
       updatedItems.push({
-        product,
+        product: product,
         quantity,
       })
     }
     this.updateState(updatedItems)
+    // $ TODO save cart state to localStorage
   }
 
   remove(productId: string): void {
-    const items: CartItem[] = this.cartState.items
+    const items: CartItem[] = this.state.items
     const updatedItems: CartItem[] = items.filter(
       (item) => item.product.id !== productId
     )
@@ -56,6 +58,6 @@ export class CartService implements Cart {
     this.updateState(updatedItems)
   }
   getState(): CartState {
-    return { ...this.cartState }
+    return { ...this.state }
   }
 }

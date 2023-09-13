@@ -2,10 +2,14 @@ class Cache<T> {
   private cache: Map<string, T> = new Map()
   private insertionOrder: string[] = []
 
-  constructor(private readonly maxItems: number) {}
+  constructor(private readonly maxItems: number) {
+    if (maxItems <= 0) {
+      throw new Error("maxItems should be greater than 0.")
+    }
+  }
 
   private evictOldest(): void {
-    if (this.insertionOrder.length >= this.maxItems) {
+    while (this.insertionOrder.length >= this.maxItems) {
       const oldestKey = this.insertionOrder.shift()
       if (oldestKey) {
         this.cache.delete(oldestKey)
@@ -14,6 +18,10 @@ class Cache<T> {
   }
 
   set(key: string, value: T): void {
+    if (!key || value === undefined) {
+      throw new Error("Key and value must be provided and not undefined.")
+    }
+
     this.evictOldest()
     this.cache.set(key, value)
     this.insertionOrder.push(key)

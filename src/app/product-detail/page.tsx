@@ -1,73 +1,85 @@
 "use client"
-import { ProductSet } from "./product-set"
-import { useEffect, useState } from "react"
+import { Product, Variants } from "@/types"
+import { useState } from "react"
 import VariantSelection from "./variant-selection"
-import mockedProductSet from "../../../testing/mocks/app/mocked-product-set"
+import mockedProduct from "../../../testing/mocks/core/product"
+
+export type VariantsDict = Record<string, string[]>
 
 interface productDetailProps {
-  product: ProductSet
-  defaultVariants: Record<string, string> | null
+  products: Product[]
 }
 
 const ProductDetail: React.FC<productDetailProps> = ({
-  product = mockedProductSet, // default values just for testing purposes.
-  defaultVariants = { Size: "Small", Color: "Red" },
+  products = [mockedProduct], // default values just for testing purposes.
 }) => {
-  const [price, setPrice] = useState("")
-  const [stock, setStock] = useState("")
-  const [imagesUrl, setImagesUrl] = useState("")
-  const [selectedVariants, setSelectedVariants] = useState<
-    Record<string, string>
-  >({})
+  const [currentProduct, setCurrentProduct] = useState(products[0])
+  const [selectedVariants, setSelectedVariants] = useState(
+    currentProduct.variants
+  )
 
-  const updateDisplayedVariant = (
-    stockDetail: any,
-    selectedVariants: Record<string, string>
-  ) => {
-    const findPriceAndStock = (detail: any) => {
-      for (const variantName of Object.keys(selectedVariants)) {
-        if (detail[variantName]) {
-          const selectedOption = selectedVariants[variantName]
-          const deeperStockDetail = detail[variantName][selectedOption]
-          if (deeperStockDetail.price) {
-            setPrice(deeperStockDetail.price.amount)
-            setStock(deeperStockDetail.availability)
-            setImagesUrl(deeperStockDetail.imagesUrl)
-            return
-          }
-          findPriceAndStock(deeperStockDetail)
-        }
+  const allVariants = products.reduce<VariantsDict>((acc, product) => {
+    for (const [variantName, value] of Object.entries(product.variants || {})) {
+      if (!acc[variantName]) {
+        acc[variantName] = [value]
+      } else {
+        acc[variantName].push(value)
       }
     }
-    findPriceAndStock(stockDetail)
+    return acc
+  }, {})
+
+  const haveSameData = (obj1, obj2) => {
+    const obj1Length = Object.keys(obj1).length
+    const obj2Length = Object.keys(obj2).length
+
+    if (obj1Length === obj2Length) {
+      return Object.keys(obj1).every(
+        (key) => obj2.hasOwnProperty(key) && obj2[key] === obj1[key]
+      )
+    }
+    return false
+  }
+
+  const updateProductInfo = (newSelectedVariants: Variants) => {
+    const selectedProduct = products.filter((product) =>
+      haveSameData(product.variants, newSelectedVariants)
+    )
+    if (selectedProduct.length !== 1) {
+      console.error(
+        "The product compatible with the selected variants could not be identified"
+      )
+      setSelectedVariants(currentProduct.variants)
+      return
+    }
+
+    setCurrentProduct(selectedProduct[0])
   }
 
   const setVariant = ({ name, option }: Record<string, string>) => {
-    const newSelectedVariants = { ...selectedVariants, [name]: option }
-    setSelectedVariants(newSelectedVariants)
-    updateDisplayedVariant(product.stockInfo, newSelectedVariants)
-  }
-
-  useEffect(() => {
-    if (defaultVariants) {
-      setSelectedVariants(defaultVariants)
-      updateDisplayedVariant(product.stockInfo, defaultVariants)
+    const newSelectedVariants: Variants = {
+      ...selectedVariants,
+      [name]: option,
     }
-  }, [])
+    setSelectedVariants(newSelectedVariants)
+    updateProductInfo(newSelectedVariants)
+  }
 
   return (
     <div>
       <h1 role="heading" aria-level={1}>
-        {product.name}
+        {currentProduct.name}
       </h1>
-      <p>{product.description}</p>
-      <p>Price: ${price}</p>
-      <p>In Stock: {stock}</p>
-      <img src={imagesUrl} alt={product.name} />
+      <img src={currentProduct.imagesUrl} alt={currentProduct.name} />
+      <p>{currentProduct.description}</p>
+      <p>Price: ${currentProduct.price.amount}</p>
+      <p>In Stock: {currentProduct.stock}</p>
       <VariantSelection
-        variants={product.variants}
+        variants={allVariants}
         manageSelectedOption={{ selectedVariants, setVariant }}
       />
+      {/* <button onClick={() => buyProduct(product)}>Buy</button> */}
+      {/* <button onClick={() => addToCart(product)}>Add to Cart</button> */}
     </div>
   )
 }

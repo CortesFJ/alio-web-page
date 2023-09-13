@@ -1,4 +1,4 @@
-import { Product } from "@/core/types"
+import { Product, ProductId, Price } from "@/types"
 
 export interface CartItem {
   product: Product

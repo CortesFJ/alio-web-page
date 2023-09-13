@@ -1,4 +1,4 @@
-import mockedProduct from "../../../mocks/app/mocked-product-set"
+import mockedProduct from "../../../mocks/core/product"
 import ProductRepository from "@/core/product-repository/application/product-repository"
 
 describe("ProductRepository Data Retrieval Interface", () => {

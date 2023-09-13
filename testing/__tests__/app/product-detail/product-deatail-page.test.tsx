@@ -1,16 +1,11 @@
 import { render, screen } from "@testing-library/react"
 
 import ProductDetail from "@/app/product-detail/page"
-import mockedProduct from "../../../mocks/app/mocked-product-set"
+import mockedProduct from "../../../mocks/core/product"
 
 describe("Product Detail Page", () => {
   const renderProductDetail = () =>
-    render(
-      <ProductDetail
-        product={mockedProduct}
-        defaultVariants={{ Size: "Small", Color: "Red" }}
-      />
-    )
+    render(<ProductDetail products={[mockedProduct]} />)
 
   it("displays the product name", () => {
     renderProductDetail()
@@ -30,14 +25,15 @@ describe("Product Detail Page", () => {
 
   it("displays the product price", () => {
     renderProductDetail()
-    const price = "20.00"
+    const price = mockedProduct.price.amount
     const productPriceElement = screen.getByText(`Price: $${price}`)
     expect(productPriceElement).toBeInTheDocument()
   })
 
   it("displays the availability status", () => {
     renderProductDetail()
-    const availabilityStatusElement = screen.getByText(/In Stock: 1/i)
+    const stock = mockedProduct.stock
+    const availabilityStatusElement = screen.getByText(`In Stock: ${stock}`)
     expect(availabilityStatusElement).toBeInTheDocument()
   })
 })

@@ -1,25 +1,25 @@
-import { VariantSet } from "./product-set"
+import { VariantsDict } from "./page"
 
 export interface VariantSelectionProps {
-  variants: VariantSet[] | undefined
+  variants: VariantsDict | undefined
   manageSelectedOption: Record<string, any>
 }
 
 const VariantSelection: React.FC<VariantSelectionProps> = ({
   variants,
   manageSelectedOption,
-}) => {
-  if (variants) {
-    return (
-      <div>
-        <h2>Variant Selection:</h2>
-        <ul>
-          {variants.map((variant) => (
-            <li key={variant.name}>
-              <h3>{variant.name}</h3>
+}) =>
+  variants ? (
+    <div>
+      <h2>Variant Selection:</h2>
+      <ul>
+        {Object.entries(variants).map(([variantName, options]) =>
+          variantName ? (
+            <li key={variantName}>
+              <h3>{variantName}</h3>
               <p>Options:</p>
               <ul>
-                {variant.options.map((option) => (
+                {options.map((option: string) => (
                   <li key={option}>
                     <label>
                       <input
@@ -28,7 +28,7 @@ const VariantSelection: React.FC<VariantSelectionProps> = ({
                         value={option}
                         onChange={() =>
                           manageSelectedOption.setVariant({
-                            name: variant.name,
+                            name: variantName,
                             option: option,
                           })
                         }
@@ -42,11 +42,10 @@ const VariantSelection: React.FC<VariantSelectionProps> = ({
                 ))}
               </ul>
             </li>
-          ))}
-        </ul>
-      </div>
-    )
-  }
-}
+          ) : null
+        )}
+      </ul>
+    </div>
+  ) : null
 
 export default VariantSelection
