@@ -1,7 +1,7 @@
-import { VariantsDict } from "./page"
+import { VariantsDict } from "../page"
 
 export interface VariantSelectionProps {
-  variants: VariantsDict | undefined
+  variants: VariantsDict
   manageSelectedOption: Record<string, any>
 }
 
@@ -9,7 +9,7 @@ const VariantSelection: React.FC<VariantSelectionProps> = ({
   variants,
   manageSelectedOption,
 }) =>
-  variants ? (
+  Object.keys(variants).length ? (
     <div>
       <h2>Variant Selection:</h2>
       <ul>
@@ -19,6 +19,8 @@ const VariantSelection: React.FC<VariantSelectionProps> = ({
               <h3>{variantName}</h3>
               <p>Options:</p>
               <ul>
+                {" "}
+                // #TODO render only the available variants combinations.
                 {options.map((option: string) => (
                   <li key={option}>
                     <label>

@@ -1,4 +1,6 @@
+import { redirect } from "next/navigation"
+
 const Home = () => {
-  return <h1>Home</h1>
+  redirect("/product-detail")
 }
 export default Home

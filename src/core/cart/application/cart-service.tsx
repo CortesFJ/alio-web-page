@@ -61,3 +61,5 @@ export class CartService implements Cart {
     return { ...this.state }
   }
 }
+
+export default new CartService()

@@ -3,11 +3,11 @@ import { CartService } from "@/core/cart/application/cart-service"
 import mockedProduct from "../../../mocks/core/product"
 
 describe("CartService", () => {
-  let cartService: Cart
+  let cart: Cart
   let mockCartState: CartState
 
   beforeEach(() => {
-    cartService = new CartService()
+    cart = new CartService()
     mockCartState = {
       items: [],
       totalPrice: { currency: "USD", amount: "0.00" },
@@ -25,20 +25,20 @@ describe("CartService", () => {
   }
 
   it("adds the mocked product to the cart", () => {
-    cartService.add(mockedProduct)
-    expect(cartService.getState()).toEqual(CartStateWhitOneProduct)
+    cart.add(mockedProduct)
+    expect(cart.getState()).toEqual(CartStateWhitOneProduct)
   })
 
   it("removes the mocked product from the cart", () => {
     const newQuantity = 5
-    cartService.add(mockedProduct, newQuantity)
-    cartService.remove(mockedProduct.id)
-    expect(cartService.getState()).toEqual(mockCartState)
+    cart.add(mockedProduct, newQuantity)
+    cart.remove(mockedProduct.id)
+    expect(cart.getState()).toEqual(mockCartState)
   })
 
   it("updates the quantity of a product in the cart", () => {
     const newQuantity = 5
-    cartService.add(mockedProduct, newQuantity)
+    cart.add(mockedProduct, newQuantity)
     const expectedUpdatedCartState: CartState = {
       items: [
         {
@@ -53,6 +53,6 @@ describe("CartService", () => {
         ),
       },
     }
-    expect(cartService.getState()).toEqual(expectedUpdatedCartState)
+    expect(cart.getState()).toEqual(expectedUpdatedCartState)
   })
 })

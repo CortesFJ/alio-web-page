@@ -1,17 +1,22 @@
 "use client"
+import { useEffect, useState } from "react"
+
 import { Product, Variants } from "@/types"
-import { useState } from "react"
-import VariantSelection from "./variant-selection"
-import mockedProduct from "../../../testing/mocks/core/product"
+
+import VariantSelection from "./components/variant-selection"
+import cartService from "@/core/cart/application/cart-service"
+import mockedProduct, {
+  mockedProducts,
+} from "../../../testing/mocks/core/product"
+import Carousel from "./components/carousel"
 
 export type VariantsDict = Record<string, string[]>
 
 interface productDetailProps {
   products: Product[]
 }
-
 const ProductDetail: React.FC<productDetailProps> = ({
-  products = [mockedProduct], // default values just for testing purposes.
+  products = [...mockedProducts, mockedProduct], // default values just for testing purposes.
 }) => {
   const [currentProduct, setCurrentProduct] = useState(products[0])
   const [selectedVariants, setSelectedVariants] = useState(
@@ -29,7 +34,7 @@ const ProductDetail: React.FC<productDetailProps> = ({
     return acc
   }, {})
 
-  const haveSameData = (obj1, obj2) => {
+  const haveSameData = (obj1: Variants, obj2: Variants) => {
     const obj1Length = Object.keys(obj1).length
     const obj2Length = Object.keys(obj2).length
 
@@ -45,11 +50,12 @@ const ProductDetail: React.FC<productDetailProps> = ({
     const selectedProduct = products.filter((product) =>
       haveSameData(product.variants, newSelectedVariants)
     )
+    console.log({ selectedProduct })
+
     if (selectedProduct.length !== 1) {
       console.error(
         "The product compatible with the selected variants could not be identified"
       )
-      setSelectedVariants(currentProduct.variants)
       return
     }
 
@@ -61,16 +67,18 @@ const ProductDetail: React.FC<productDetailProps> = ({
       ...selectedVariants,
       [name]: option,
     }
+
     setSelectedVariants(newSelectedVariants)
     updateProductInfo(newSelectedVariants)
   }
 
   return (
-    <div>
+    <div className="border border-red-600  m-4">
       <h1 role="heading" aria-level={1}>
         {currentProduct.name}
       </h1>
-      <img src={currentProduct.imagesUrl} alt={currentProduct.name} />
+      <Carousel imageUrls={currentProduct.imagesUrl} />
+      {/* <img src={} alt={currentProduct.name} /> */}
       <p>{currentProduct.description}</p>
       <p>Price: ${currentProduct.price.amount}</p>
       <p>In Stock: {currentProduct.stock}</p>
@@ -79,7 +87,9 @@ const ProductDetail: React.FC<productDetailProps> = ({
         manageSelectedOption={{ selectedVariants, setVariant }}
       />
       {/* <button onClick={() => buyProduct(product)}>Buy</button> */}
-      {/* <button onClick={() => addToCart(product)}>Add to Cart</button> */}
+      <button onClick={() => cartService.add(currentProduct)}>
+        Add to Cart
+      </button>
     </div>
   )
 }
