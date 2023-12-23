@@ -15,6 +15,9 @@ describe("ProductRepository Data Retrieval Interface", () => {
   it("Fetch Product by ID", async () => {
     httpClientMock.get.mockResolvedValue({ data: mockedProduct })
     const product = await productRepository.fetchProductById(mockedProduct.id)
+    expect(httpClientMock.get).toHaveBeenCalledWith(
+      expect.stringContaining(mockedProduct.id)
+    )
     expect(product).toEqual(mockedProduct)
   })
 

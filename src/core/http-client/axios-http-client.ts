@@ -14,17 +14,20 @@ class AxiosHttpClient implements HttpClient {
     this.axiosInstance = axios.create({ baseURL })
   }
 
-  private handleResponse<T>(response: AxiosResponse<T>): { data: T } {
+  private handleResponse(response: AxiosResponse): { data: any  } {
     if (!response.data) {
       throw new DataNotFoundError("Product not found")
     }
-    return { data: response.data }
+    try {
+      return { data: response.data }
+    } catch (error: any) {
+      throw new Error(`Failed to parse response data: ${error.message}`)
+    }
   }
 
-  private handleError<T>(error: AxiosError<T>): never {
+  private handleError(error: AxiosError): never {
     if (axios.isAxiosError(error)) {
       if (error.response?.status === 401) {
-        console.error("Unauthorized access:", error.message)
         throw new UnauthorizedError("Unauthorized access")
       }
       console.error("Network request failed:", error.message)

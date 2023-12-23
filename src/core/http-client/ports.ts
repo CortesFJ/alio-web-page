@@ -1,4 +1,3 @@
-import axios, { AxiosInstance, AxiosError, AxiosResponse } from "axios"
 
 export class NetworkError extends Error {
   constructor(message: string) {

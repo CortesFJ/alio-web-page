@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 import { Product, Variants } from "@/types"
 
@@ -9,8 +9,6 @@ import mockedProduct, {
   mockedProducts,
 } from "../../../testing/mocks/core/product"
 import Carousel from "./components/carousel"
-
-export type VariantsDict = Record<string, string[]>
 
 interface productDetailProps {
   products: Product[]
@@ -22,17 +20,6 @@ const ProductDetail: React.FC<productDetailProps> = ({
   const [selectedVariants, setSelectedVariants] = useState(
     currentProduct.variants
   )
-
-  const allVariants = products.reduce<VariantsDict>((acc, product) => {
-    for (const [variantName, value] of Object.entries(product.variants || {})) {
-      if (!acc[variantName]) {
-        acc[variantName] = [value]
-      } else {
-        acc[variantName].push(value)
-      }
-    }
-    return acc
-  }, {})
 
   const haveSameData = (obj1: Variants, obj2: Variants) => {
     const obj1Length = Object.keys(obj1).length
@@ -50,7 +37,6 @@ const ProductDetail: React.FC<productDetailProps> = ({
     const selectedProduct = products.filter((product) =>
       haveSameData(product.variants, newSelectedVariants)
     )
-    console.log({ selectedProduct })
 
     if (selectedProduct.length !== 1) {
       console.error(
@@ -67,7 +53,6 @@ const ProductDetail: React.FC<productDetailProps> = ({
       ...selectedVariants,
       [name]: option,
     }
-
     setSelectedVariants(newSelectedVariants)
     updateProductInfo(newSelectedVariants)
   }
@@ -83,7 +68,7 @@ const ProductDetail: React.FC<productDetailProps> = ({
       <p>Price: ${currentProduct.price.amount}</p>
       <p>In Stock: {currentProduct.stock}</p>
       <VariantSelection
-        variants={allVariants}
+        variantsList={products.map((p) => p.variants)}
         manageSelectedOption={{ selectedVariants, setVariant }}
       />
       {/* <button onClick={() => buyProduct(product)}>Buy</button> */}

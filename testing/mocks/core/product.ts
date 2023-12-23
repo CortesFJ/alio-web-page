@@ -27,6 +27,7 @@ export const mockedProducts: Product[] = [
     variants: {
       Size: "Medium",
       Color: "Blue",
+      Genre: "Man"
     },
     stock: 10,
   },
@@ -38,6 +39,18 @@ export const mockedProducts: Product[] = [
     imagesUrl: ["/item-01.jpeg", "/item-02.jpeg", "/item-03.jpeg"],
     variants: {
       Size: "Large",
+      Color: "Green",
+    },
+    stock: 20,
+  },
+  {
+    id: "4",
+    name: "Some Product",
+    description: "Description for some product.",
+    price: { currency: "GBP", amount: "60.05" },
+    imagesUrl: ["/item-01.jpeg", "/item-02.jpeg", "/item-03.jpeg"],
+    variants: {
+      Size: "Small",
       Color: "Green",
     },
     stock: 20,
