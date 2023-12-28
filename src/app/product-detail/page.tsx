@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 import { Product, Variants } from "@/types"
 
@@ -10,6 +10,19 @@ import mockedProduct, {
 } from "../../../testing/mocks/core/product"
 import Carousel from "./components/carousel"
 
+const missingProduct: Product = {
+  id: "missingProduct",
+  name: "Missing Product",
+  description: "There is no available units of the selected product.",
+  price: { currency: "USD", amount: "0.00" },
+  imagesUrl: ["/missing-part-puzzle.webp"],
+  variants: {
+    // Size: "Small",
+    // Color: "Red",
+  },
+  stock: 0,
+}
+
 interface productDetailProps {
   products: Product[]
 }
@@ -17,43 +30,73 @@ const ProductDetail: React.FC<productDetailProps> = ({
   products = [...mockedProducts, mockedProduct], // default values just for testing purposes.
 }) => {
   const [currentProduct, setCurrentProduct] = useState(products[0])
-  const [selectedVariants, setSelectedVariants] = useState(
-    currentProduct.variants
-  )
+  const [currentOptions, setCurrentOptions] = useState({
+    selectedVariants: products[0].variants,
+    possibleOptions: updateCurrentOptions(products[0].variants).possibleOptions,
+  })
 
-  const haveSameData = (obj1: Variants, obj2: Variants) => {
-    const obj1Length = Object.keys(obj1).length
-    const obj2Length = Object.keys(obj2).length
+  function updateCurrentOptions(selectedVariants: Variants) {
+    const mainVariantName = Object.keys(products[0].variants)[0]
+    const selectedMainVariant = selectedVariants[mainVariantName]
+    const possibleOptions: Record<string, string[]> = {}
+    const variantsList = products.map((p) => p.variants)
 
-    if (obj1Length === obj2Length) {
-      return Object.keys(obj1).every(
-        (key) => obj2.hasOwnProperty(key) && obj2[key] === obj1[key]
-      )
-    }
-    return false
+    variantsList
+      .filter((variants) => variants[mainVariantName] === selectedMainVariant)
+      .forEach((variants) => {
+        const vNames = Object.keys(variants)
+
+        vNames.forEach((vName) => {
+          // if (vName === mainVariantName) {
+          //   return
+          // }
+
+          if (vName in possibleOptions) {
+            possibleOptions[vName] = [
+              ...possibleOptions[vName],
+              variants[vName],
+            ]
+          } else {
+            possibleOptions[vName] = [variants[vName]]
+          }
+        })
+      })
+
+    Object.entries(selectedVariants).forEach(([vName, option]) => {
+      if (!(vName in possibleOptions)) {
+        return
+      }
+
+      if (!possibleOptions[vName].includes(option)) {
+        selectedVariants[vName] = possibleOptions[vName][0]
+      }
+    })
+
+    return { selectedVariants, possibleOptions }
   }
+
+  const haveSameData = (obj1: Variants, obj2: Variants) =>
+    Object.keys(obj1).every(
+      (key) => obj2.hasOwnProperty(key) && obj2[key] === obj1[key]
+    )
 
   const updateProductInfo = (newSelectedVariants: Variants) => {
     const selectedProduct = products.filter((product) =>
       haveSameData(product.variants, newSelectedVariants)
     )
 
-    if (selectedProduct.length !== 1) {
-      console.error(
-        "The product compatible with the selected variants could not be identified"
-      )
-      return
-    }
-
-    setCurrentProduct(selectedProduct[0])
+    selectedProduct.length === 1
+      ? setCurrentProduct(selectedProduct[0])
+      : setCurrentProduct(missingProduct)
   }
 
-  const setVariant = ({ name, option }: Record<string, string>) => {
+  const setVariant = ({ vName, option }: Record<string, string>) => {
     const newSelectedVariants: Variants = {
-      ...selectedVariants,
-      [name]: option,
+      ...currentOptions.selectedVariants,
+      [vName]: option,
     }
-    setSelectedVariants(newSelectedVariants)
+
+    setCurrentOptions(updateCurrentOptions(newSelectedVariants))
     updateProductInfo(newSelectedVariants)
   }
 
@@ -69,7 +112,7 @@ const ProductDetail: React.FC<productDetailProps> = ({
       <p>In Stock: {currentProduct.stock}</p>
       <VariantSelection
         variantsList={products.map((p) => p.variants)}
-        manageSelectedOption={{ selectedVariants, setVariant }}
+        manageState={{ ...currentOptions, setVariant }}
       />
       {/* <button onClick={() => buyProduct(product)}>Buy</button> */}
       <button onClick={() => cartService.add(currentProduct)}>
