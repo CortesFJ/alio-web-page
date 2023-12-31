@@ -1,46 +1,43 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useRouter, useParams } from "next/navigation"
+import Link from "next/link"
 
 interface CarouselProps {
   imageUrls: string[]
 }
 
-import { useRouter } from "next/navigation"
-import Link from "next/link"
-
 const Carousel: React.FC<CarouselProps> = ({ imageUrls }) => {
-  const [currenImage, setCurrentImage] = useState(1)
+  const [hash, setHash] = useState(1)
   const router = useRouter()
+  const params = useParams()
+
+  useEffect(() => {
+    const hs = Number(window.location.hash[1])
+    Number.isNaN(hs) ? setHash(0) : setHash(hs)
+  }, [params])
 
   const goToPrevious = () => {
-    if (currenImage === 0) {
-      router.push(`#item${imageUrls.length - 1}`)
-      setCurrentImage(imageUrls.length - 1)
-      return
-    }
-    router.push(`#item${currenImage - 1}`)
-    setCurrentImage(currenImage - 1)
+    hash === 0
+      ? router.push(`#${imageUrls.length - 1}`)
+      : router.push(`#${hash - 1}`)
   }
 
   const goToNext = () => {
-    if (currenImage === imageUrls.length - 1) {
-      router.push(`#item${0}`)
-      setCurrentImage(0)
-      return
-    }
-    router.push(`#item${currenImage + 1}`)
-    setCurrentImage(currenImage + 1)
+    hash === imageUrls.length - 1
+      ? router.push(`#${0}`)
+      : router.push(`#${hash + 1}`)
   }
 
   return (
     <>
       <div className=" w-screen relative">
         <div className=" flex aspect-[10/10] sm:h-[450px] mx-auto gap-1 overflow-scroll snap-mandatory snap-x no-scrollbar  sm:scroll-smooth">
-          {imageUrls.map((imageUrl, index) => (
+          {imageUrls.map((imageUrl, hash) => (
             <img
-              key={index}
-              id={`item${index}`}
+              key={hash}
+              id={`item${hash}`}
               src={imageUrl}
               className=" w-full left-0 object-cover rounded snap-center"
             />
@@ -88,13 +85,13 @@ const Carousel: React.FC<CarouselProps> = ({ imageUrls }) => {
         </div>
       </div>
       <div className="flex justify-center w-full py-2 gap-2">
-        {imageUrls.map((_, index) => {
-          const isActive = currenImage === index
+        {imageUrls.map((_, i) => {
+          const isActive = hash === i
           return (
             <Link
-              key={index}
-              href={`#item${index}`}
-              onClick={() => setCurrentImage(index)}
+              key={i}
+              href={`#${i}`}
+              // onClick={() => setCurrentImage(hash)}
               className={`h-4 w-4 border hover:bg-primary rounded-full
             ${isActive ? "bg-primary" : "bg-secondary"}`}
             ></Link>

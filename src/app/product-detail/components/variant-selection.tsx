@@ -1,5 +1,6 @@
-import { useEffect, useState, useRef } from "react"
+import { useRef } from "react"
 import { Variants } from "@/types"
+import { useSearchParams, usePathname, useRouter } from "next/navigation"
 
 type VariantsDict = Record<string, string[]>
 
@@ -22,54 +23,30 @@ const buildVariantDictionary = (variantsList: Variants[]) => {
 const displayOptions = (
   variantName: string,
   options: string[],
-  manageState: Record<string, any>,
   availableOptions: string | string[]
 ) => {
   const myElementRef = useRef(null)
-  // const [checkedOptions, setCheckedOptions] = useState({})
+  const pathname = usePathname()
+  const { replace } = useRouter()
+  const searchParams = useSearchParams()
 
-  // const checked = (
-  //   SelectedVariants: any,
-  //   variantName: string,
-  //   option: string
-  // ) => {
-  //   if (Object.values(SelectedVariants).includes(option)) {
-  //     if (checkedOptions[variantName] !== option) {
-  //       const element = myElementRef.current
-  //       if (element) {
-  //         element.classList.add("border")
-  //         element.classList.add("border-red-500")
-  //         setTimeout(() => {
-  //           element.classList.remove("border")
-  //           element.classList.remove("border-red-500")
-  //         }, 500)
-  //       }
-  //         setCheckedOptions({ ...checkedOptions, variantName: option })
-  //     }
-  //     return true
-  //   }
-  // }
-  useEffect(() => {
-    const element = myElementRef.current
-    if (element) {
-      element.classList.add("border")
-      element.classList.add("border-red-500")
-      setTimeout(() => {
-        element.classList.remove("border")
-        element.classList.remove("border-red-500")
-      }, 500)
-    }
-  }, [])
+  const handleVariantSelection = (
+    variantName: string,
+    selectedOption: string
+  ) => {
+    const params = new URLSearchParams(searchParams)
+
+    params.set(variantName, selectedOption)
+
+    replace(`${pathname}?${params.toString()}`)
+  }
 
   if (availableOptions === "none") {
     return
   }
+
   return (
-    <li
-      ref={myElementRef}
-      key={variantName}
-      className="transition-all duration-300 ease-in-out"
-    >
+    <li ref={myElementRef} key={variantName}>
       <h3>{variantName}</h3>
       {options.length === 1 ? (
         <span>{options[0]}</span>
@@ -79,25 +56,21 @@ const displayOptions = (
           {options.map((option: string, i) =>
             availableOptions === "all" || availableOptions.includes(option) ? (
               <li key={option + i}>
-                <label>
+                <label
+                  className={`${
+                    searchParams.get(variantName) === option
+                      ? "bg-rose-300"
+                      : "bg-slate-200"
+                  } p-1 rounded cursor-pointer hover:bg-slate-400 transition-colors duration-500 ease-in-out`}
+                >
                   <input
+                    className="hidden"
                     type="radio"
                     name={variantName}
-                    // disabled={
-                    //   availableOptions === "all"
-                    //     ? false
-                    //     : !availableOptions.includes(option)
-                    // }
-                    onChange={() =>{
-                      manageState.setVariant({
-                        vName: variantName,
-                        option,
-                      })
-                    }
-                    }
-                    checked={Object.values(
-                      manageState.selectedVariants
-                    ).includes(option)}
+                    // disabled={ if not available units }
+                    onChange={() => {
+                      handleVariantSelection(variantName, option)
+                    }}
                   />
                   {option}
                 </label>
@@ -109,19 +82,15 @@ const displayOptions = (
     </li>
   )
 }
-//     checked(
-//     manageState.selectedVariants,
-//     variantName,
-//  )   option
 
 export interface VariantSelectionProps {
   variantsList: Variants[]
-  manageState: Record<string, any>
+  possibleOptions: Record<string, any>
 }
 
 const VariantSelection: React.FC<VariantSelectionProps> = ({
   variantsList,
-  manageState,
+  possibleOptions,
 }) => {
   const variantsDict = buildVariantDictionary(variantsList)
 
@@ -133,16 +102,11 @@ const VariantSelection: React.FC<VariantSelectionProps> = ({
           const availableOptions: string | string[] =
             ind === 0
               ? "all"
-              : variantName in manageState.possibleOptions
-              ? manageState.possibleOptions[variantName]
+              : variantName in possibleOptions
+              ? possibleOptions[variantName]
               : "none"
 
-          return displayOptions(
-            variantName,
-            options,
-            manageState,
-            availableOptions
-          )
+          return displayOptions(variantName, options, availableOptions)
         })}
       </ul>
     </section>
