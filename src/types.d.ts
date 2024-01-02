@@ -11,7 +11,7 @@ export type Product = {
   name: string
   description: string
   price: Price
-  imagesUrl: string[]
+  imageUrls: string[]
   variants: Variants
   category?: Category
   stock: number

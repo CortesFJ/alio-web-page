@@ -5,7 +5,7 @@ const mockedProduct: Product = {
   name: "Sample Product",
   description: "This is a sample product description.",
   price: { currency: "USD", amount: "23.00" },
-  imagesUrl: ["/cafe-01.jpeg", "/cafe-02.jpeg"],
+  imageUrls: ["/cafe-01.jpeg", "/cafe-02.jpeg"],
   variants: {
     Color: "Red",
     Size: "Small",
@@ -18,7 +18,7 @@ export const mockedProducts: Product[] = [
     name: "Another Product",
     description: "This is another product description.",
     price: { currency: "EUR", amount: "18.50" },
-    imagesUrl: ["/azul-01.jpeg", "/azul-02.jpeg"],
+    imageUrls: ["/azul-01.jpeg", "/azul-02.jpeg"],
     variants: {
       Color: "Blue",
       Size: "Medium",
@@ -31,7 +31,7 @@ export const mockedProducts: Product[] = [
     name: "Yet Another Product",
     description: "Description for yet another product.",
     price: { currency: "GBP", amount: "30.25" },
-    imagesUrl: ["/item-01.jpeg", "/item-02.jpeg", "/item-03.jpeg"],
+    imageUrls: ["/item-01.jpeg", "/item-02.jpeg", "/item-03.jpeg"],
     variants: {
       Color: "Green",
       Size: "Large",
@@ -43,7 +43,7 @@ export const mockedProducts: Product[] = [
     name: "Some Product",
     description: "Description for some product.",
     price: { currency: "GBP", amount: "60.05" },
-    imagesUrl: ["/item-01.jpeg", "/item-02.jpeg", "/item-03.jpeg"],
+    imageUrls: ["/item-01.jpeg", "/item-02.jpeg", "/item-03.jpeg"],
     variants: {
       Color: "Green",
       Size: "Small",

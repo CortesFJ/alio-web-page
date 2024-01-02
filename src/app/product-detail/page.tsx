@@ -1,28 +1,19 @@
 "use client"
 import { useState, useEffect } from "react"
+import { usePathname, useRouter } from "next/navigation"
 
 import { Product, Variants } from "@/types"
-
+import ProductDescription from "./components/product-description"
 import VariantSelection from "./components/variant-selection"
 import cartService from "@/core/cart/application/cart-service"
 import mockedProduct, {
   mockedProducts,
 } from "../../../testing/mocks/core/product"
-import Carousel from "./components/carousel"
-import { usePathname, useRouter } from "next/navigation"
 
-const missingProduct: Product = {
-  id: "missingProduct",
-  name: "Missing Product",
-  description: "There is no available units of the selected product.",
-  price: { currency: "USD", amount: "0.00" },
-  imagesUrl: ["/missing-part-puzzle.webp"],
-  variants: {
-    // Size: "Small",
-    // Color: "Red",
-  },
-  stock: 0,
-}
+const haveSameData = (obj1: Variants, obj2: Variants) =>
+  Object.keys(obj1).every(
+    (key) => obj2.hasOwnProperty(key) && obj2[key] === obj1[key]
+  )
 
 interface productDetailProps {
   products: Product[]
@@ -39,48 +30,33 @@ const ProductDetail: React.FC<productDetailProps> = ({
 
   const params = new URLSearchParams(searchParams)
 
-  useEffect(() => {
-    const setDefaultProduct = () => {
-      const variants = Object.entries(products[0].variants)
+  function setDefaultProduct() {
+    const variants = Object.entries(products[0].variants)
 
-      variants.forEach(([vName, option]) => {
-        params.set(vName, option)
-      })
+    variants.forEach(([vName, option]) => {
+      params.set(vName, option)
+    })
 
-      replace(`${pathname}?${params.toString()}`)
+    replace(`${pathname}?${params.toString()}`)
+  }
 
-      setCurrentProduct(products[0])
-      setPossibleOptions(
-        updateCurrentOptions(products[0].variants).possibleOptions
-      )
-    }
-    const { possibleOptions, changed } = updateCurrentOptions(searchParams)
+  function updateProductInfo(variants: Variants) {
+    const selectedProduct = products.filter((product) =>
+      haveSameData(product.variants, variants)
+    )
 
-    const changedVariants = Object.entries(changed)
+    if (selectedProduct.length) {
+      setCurrentProduct(selectedProduct[0])
+      return true
+    } else return false
+  }
 
-    if (changedVariants.length) {
-      changedVariants.forEach(([vName, option]) => {
-        params.set(vName, option)
-      })
-
-      replace(`${pathname}?${params.toString()}`)
-    } else {
-      const productUpdated = updateProductInfo(searchParams)
-
-      if (productUpdated) {
-        setPossibleOptions(possibleOptions)
-      } else {
-        setDefaultProduct()
-      }
-    }
-  }, [searchParams])
-
-  function updateCurrentOptions(selectedVariants: Variants) {
+  function updateCurrentOptions(variants: Variants) {
     const possibleOptions: Record<string, string[]> = {}
     const mainVariantName = Object.keys(products[0].variants)[0]
-    const selectedMainVariant = selectedVariants[mainVariantName]
+    const selectedMainVariant = variants[mainVariantName]
     const variantsList = products.map((p) => p.variants)
-    const changed: Record<string, string> = {}
+    const changedVariants: Record<string, string> = {}
 
     variantsList
       .filter((variants) => variants[mainVariantName] === selectedMainVariant)
@@ -103,47 +79,47 @@ const ProductDetail: React.FC<productDetailProps> = ({
         })
       })
 
-    Object.entries(selectedVariants).forEach(([vName, option]) => {
+    Object.entries(variants).forEach(([vName, option]) => {
       if (!(vName in possibleOptions)) {
         return
       }
 
       if (!possibleOptions[vName].includes(option)) {
-        changed[vName] = possibleOptions[vName][0]
+        changedVariants[vName] = possibleOptions[vName][0]
       }
     })
 
-    return { possibleOptions, changed }
+    return { possibleOptions, changedVariants }
   }
 
-  const haveSameData = (obj1: Variants, obj2: Variants) =>
-    Object.keys(obj1).every(
-      (key) => obj2.hasOwnProperty(key) && obj2[key] === obj1[key]
-    )
+  useEffect(() => {
+    const { possibleOptions, changedVariants } =
+      updateCurrentOptions(searchParams)
 
-  const updateProductInfo = (newSelectedVariants: Variants) => {
-    const selectedProduct = products.filter((product) =>
-      haveSameData(product.variants, newSelectedVariants)
-    )
+    const newVariantsList = Object.entries(changedVariants)
 
-    if (selectedProduct.length === 1) {
-      setCurrentProduct(selectedProduct[0])
-      return true
-    } else return false
-  }
+    if (newVariantsList.length) {
+      newVariantsList.forEach(([vName, option]) => {
+        params.set(vName, option)
+      })
+
+      replace(`${pathname}?${params.toString()}`)
+    } else {
+      const updatedProduct = updateProductInfo(searchParams)
+
+      if (updatedProduct) {
+        setPossibleOptions(possibleOptions)
+      } else {
+        setDefaultProduct()
+      }
+    }
+  }, [searchParams])
 
   return (
     <>
       {currentProduct ? (
         <div className="border border-red-600  m-4">
-          <h1 role="heading" aria-level={1}>
-            {currentProduct.name}
-          </h1>
-          <Carousel imageUrls={currentProduct.imagesUrl} />
-          {/* <img src={} alt={currentProduct.name} /> */}
-          <p>{currentProduct.description}</p>
-          <p>Price: ${currentProduct.price.amount}</p>
-          <p>In Stock: {currentProduct.stock}</p>
+          <ProductDescription product={currentProduct} />
           <VariantSelection
             variantsList={products.map((p) => p.variants)}
             possibleOptions={possibleOptions}
