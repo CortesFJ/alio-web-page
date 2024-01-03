@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation"
 import { Product, Variants } from "@/types"
 import ProductDescription from "./components/product-description"
 import VariantSelection from "./components/variant-selection"
-import cartService from "@/core/cart/application/cart-service"
+import cartService, { CartService } from "@/core/cart/application/cart-service"
 import mockedProduct, {
   mockedProducts,
 } from "../../../testing/mocks/core/product"
@@ -15,22 +15,69 @@ const haveSameData = (obj1: Variants, obj2: Variants) =>
     (key) => obj2.hasOwnProperty(key) && obj2[key] === obj1[key]
   )
 
-interface productDetailProps {
+function updateOptions(
+  selectedVariants: Variants,
   products: Product[]
-  searchParams: {}
+): { allowedOptions: any; changedVariants: any } {
+  const mainVariantName = Object.keys(products[0].variants)[0]
+  const selectedMainVariant = selectedVariants[mainVariantName]
+  const allowedOptions: Record<string, string[]> = {}
+  const variantsList = products.map((p) => p.variants)
+  //update possible options
+  variantsList
+    .filter((variants) => variants[mainVariantName] === selectedMainVariant)
+    .forEach((variants) => {
+      const vNames = Object.keys(variants)
+
+      vNames.forEach((vName) => {
+        if (vName === mainVariantName) {
+          return
+        }
+
+        if (vName in allowedOptions) {
+          allowedOptions[vName] = [...allowedOptions[vName], variants[vName]]
+        } else {
+          allowedOptions[vName] = [variants[vName]]
+        }
+      })
+    })
+
+  // get changed variants when selectedVariants are no possible
+  const changedVariants: Record<string, string> = {}
+
+  Object.entries(selectedVariants).forEach(([vName, option]) => {
+    if (!Object.keys(allowedOptions).includes(vName)) {
+      return
+    }
+
+    if (!allowedOptions[vName].includes(option)) {
+      changedVariants[vName] = allowedOptions[vName][0]
+    }
+  })
+
+  return { allowedOptions, changedVariants }
 }
+
+interface productDetailProps {
+  searchParams: {}
+  products?: Product[]
+  cart?: CartService
+  updateCurrentOptions?: typeof updateOptions
+}
+
 const ProductDetail: React.FC<productDetailProps> = ({
-  products = [...mockedProducts, mockedProduct], // default values just for testing purposes.
   searchParams,
+  products = [...mockedProducts, mockedProduct],
+  cart = cartService,
+  updateCurrentOptions = updateOptions,
 }) => {
   const [currentProduct, setCurrentProduct] = useState<Product>()
   const [possibleOptions, setPossibleOptions] = useState({})
   const pathname = usePathname()
   const { replace } = useRouter()
-
   const params = new URLSearchParams(searchParams)
 
-  function setDefaultProduct() {
+  function loadDefaultProduct() {
     const variants = Object.entries(products[0].variants)
 
     variants.forEach(([vName, option]) => {
@@ -51,67 +98,23 @@ const ProductDetail: React.FC<productDetailProps> = ({
     } else return false
   }
 
-  function updateCurrentOptions(variants: Variants) {
-    const possibleOptions: Record<string, string[]> = {}
-    const mainVariantName = Object.keys(products[0].variants)[0]
-    const selectedMainVariant = variants[mainVariantName]
-    const variantsList = products.map((p) => p.variants)
-    const changedVariants: Record<string, string> = {}
-
-    variantsList
-      .filter((variants) => variants[mainVariantName] === selectedMainVariant)
-      .forEach((variants) => {
-        const vNames = Object.keys(variants)
-
-        vNames.forEach((vName) => {
-          if (vName === mainVariantName) {
-            return
-          }
-
-          if (vName in possibleOptions) {
-            possibleOptions[vName] = [
-              ...possibleOptions[vName],
-              variants[vName],
-            ]
-          } else {
-            possibleOptions[vName] = [variants[vName]]
-          }
-        })
-      })
-
-    Object.entries(variants).forEach(([vName, option]) => {
-      if (!(vName in possibleOptions)) {
-        return
-      }
-
-      if (!possibleOptions[vName].includes(option)) {
-        changedVariants[vName] = possibleOptions[vName][0]
-      }
-    })
-
-    return { possibleOptions, changedVariants }
-  }
-
   useEffect(() => {
-    const { possibleOptions, changedVariants } =
-      updateCurrentOptions(searchParams)
+    const { allowedOptions, changedVariants } = updateCurrentOptions(
+      searchParams,
+      products
+    )
 
-    const newVariantsList = Object.entries(changedVariants)
+    const newVariantsList: [string, string][] = Object.entries(changedVariants)
 
     if (newVariantsList.length) {
       newVariantsList.forEach(([vName, option]) => {
         params.set(vName, option)
       })
-
       replace(`${pathname}?${params.toString()}`)
+    } else if (updateProductInfo(searchParams)) {
+      setPossibleOptions(allowedOptions)
     } else {
-      const updatedProduct = updateProductInfo(searchParams)
-
-      if (updatedProduct) {
-        setPossibleOptions(possibleOptions)
-      } else {
-        setDefaultProduct()
-      }
+      loadDefaultProduct()
     }
   }, [searchParams])
 
@@ -125,13 +128,12 @@ const ProductDetail: React.FC<productDetailProps> = ({
             possibleOptions={possibleOptions}
           />
           {/* <button onClick={() => buyProduct(product)}>Buy</button> */}
-          <button onClick={() => cartService.add(currentProduct)}>
-            Add to Cart
-          </button>
+          <button onClick={() => cart.add(currentProduct)}>Add to Cart</button>
         </div>
       ) : null}
     </>
   )
 }
 
+export const exportToTest = { updateOptions }
 export default ProductDetail
