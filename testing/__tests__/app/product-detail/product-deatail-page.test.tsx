@@ -1,47 +1,34 @@
 import ProductDetail, { exportToTest } from "@/app/product-detail/page"
-import { mockedWallets } from "../../../mocks/core/product"
-import { render, screen } from "@testing-library/react"
-import { stringify } from "querystring"
-import mockRouter from "next-router-mock"
 import VariantSelection from "@/app/product-detail/components/variant-selection"
 import ProductDescription from "@/app/product-detail/components/product-description"
+import { mockedWallets } from "../../../mocks/core/product"
+
+import { render} from "@testing-library/react"
+import { stringify } from "querystring"
+
 
 const { updateOptions } = exportToTest
 
+// Mocks
 const replace = jest.fn()
 jest.mock("next/navigation", () => ({
-  // ...require('next-router-mock'),
-  // useSearchParams: () => jest.fn(),
-  // useParams: () => jest.fn(),
   usePathname: jest.fn(() => "initial/pathname"),
   useRouter: jest.fn(() => ({ replace })),
 }))
-// Mock the VariantSelection component
-jest.mock("@/app/product-detail/components/variant-selection", () => {
-  return jest
-    .fn
-    //   (props) => (
-    //   <div data-testid="mocked-variant-selection">
-    //     {/* Mocked implementation */}
-    //   </div>
-    // )
-    ()
-})
-jest.mock("@/app/product-detail/components/product-description", () => {
-  return jest
-    .fn
-    //   (props) => (
-    //   <div data-testid="mocked-variant-selection">
-    //     {/* Mocked implementation */}
-    //   </div>
-    // )
-    ()
-})
+jest.mock("@/app/product-detail/components/variant-selection", () => jest.fn())
+jest.mock("@/app/product-detail/components/product-description", () =>
+  jest.fn()
+)
+
 
 describe("Product Detail Page", () => {
   const defaultProduct = mockedWallets[0]
   const defaultVariants = defaultProduct.variants
-  const queryString = stringify(defaultVariants)
+  const defaultQueryString = stringify(defaultVariants)
+  const variantsList = mockedWallets.map((p) => p.variants)
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
 
   test("if not searchParams, should set searchParams for the first product", () => {
     render(
@@ -51,7 +38,7 @@ describe("Product Detail Page", () => {
         updateCurrentOptions={updateOptions}
       />
     )
-    expect(replace).toBeCalledWith(expect.stringContaining(queryString))
+    expect(replace).toBeCalledWith(expect.stringContaining(defaultQueryString))
     expect(replace).toBeCalledWith(expect.stringContaining("initial/pathname"))
   })
 
@@ -63,13 +50,12 @@ describe("Product Detail Page", () => {
         updateCurrentOptions={updateOptions}
       />
     )
-    expect(replace).toBeCalledWith(expect.stringContaining(queryString))
+    expect(replace).toBeCalledWith(expect.stringContaining(defaultQueryString))
     expect(replace).toBeCalledWith(expect.stringContaining("initial/pathname"))
   })
 
   test("should render the product matching whit searchParams", () => {
-    const variantsList = mockedWallets.map((p) => p.variants)
-    const search_params1 = { Color: "Brown", Material: "Leather" }
+    const search_params1 = mockedWallets[0].variants
     const options1 = updateOptions(search_params1, mockedWallets)
 
     render(
@@ -87,11 +73,14 @@ describe("Product Detail Page", () => {
     )
     expect(VariantSelection).toBeCalledTimes(1)
     expect(VariantSelection).toHaveBeenCalledWith(
-      expect.objectContaining({ variantsList ,possibleOptions:options1.allowedOptions}),
+      expect.objectContaining({
+        variantsList,
+        possibleOptions: options1.allowedOptions,
+      }),
       {}
     )
 
-    const search_params2 = { Color: "Tan", Material: "Canvas" }
+    const search_params2 = mockedWallets[2].variants
     const options2 = updateOptions(search_params1, mockedWallets)
 
     render(
@@ -109,10 +98,14 @@ describe("Product Detail Page", () => {
     )
     expect(VariantSelection).toBeCalledTimes(2)
     expect(VariantSelection).toHaveBeenCalledWith(
-      expect.objectContaining({ variantsList ,possibleOptions:options2.allowedOptions}),
+      expect.objectContaining({
+        variantsList,
+        possibleOptions: options2.allowedOptions,
+      }),
       {}
     )
   })
+
 })
 
 describe("updateOptions functions", () => {

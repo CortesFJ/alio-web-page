@@ -5,10 +5,11 @@ import { usePathname, useRouter } from "next/navigation"
 import { Product, Variants } from "@/types"
 import ProductDescription from "./components/product-description"
 import VariantSelection from "./components/variant-selection"
-import cartService, { CartService } from "@/core/cart/application/cart-service"
+import cartService from "@/core/cart/application/cart-service"
 import mockedProduct, {
   mockedProducts,
 } from "../../../testing/mocks/core/product"
+import BuyButton from "./components/buy-button"
 
 const haveSameData = (obj1: Variants, obj2: Variants) =>
   Object.keys(obj1).every(
@@ -61,14 +62,12 @@ function updateOptions(
 interface productDetailProps {
   searchParams: {}
   products?: Product[]
-  cart?: CartService
   updateCurrentOptions?: typeof updateOptions
 }
 
 const ProductDetail: React.FC<productDetailProps> = ({
   searchParams,
   products = [...mockedProducts, mockedProduct],
-  cart = cartService,
   updateCurrentOptions = updateOptions,
 }) => {
   const [currentProduct, setCurrentProduct] = useState<Product>()
@@ -127,8 +126,7 @@ const ProductDetail: React.FC<productDetailProps> = ({
             variantsList={products.map((p) => p.variants)}
             possibleOptions={possibleOptions}
           />
-          {/* <button onClick={() => buyProduct(product)}>Buy</button> */}
-          <button onClick={() => cart.add(currentProduct)}>Add to Cart</button>
+          <BuyButton product={currentProduct} />
         </div>
       ) : null}
     </>

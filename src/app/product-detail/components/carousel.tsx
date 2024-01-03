@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { useRouter, useParams } from "next/navigation"
 import Link from "next/link"
-import { LeftArrow, RightArrow } from "./arrowButtons"
+import { LeftArrow, RightArrow } from "./arrow-buttons"
 
 const NavDots = ({ items, current }: { items: string[]; current: number }) => (
   <div className="flex justify-center w-full py-2 gap-2">
