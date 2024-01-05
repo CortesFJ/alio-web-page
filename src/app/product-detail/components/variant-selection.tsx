@@ -1,5 +1,5 @@
 import { useRef } from "react"
-import { Variants } from "@/types"
+import { Variants } from "@/core/product-repository/product"
 import { useSearchParams, usePathname, useRouter } from "next/navigation"
 
 const displayOptions = (

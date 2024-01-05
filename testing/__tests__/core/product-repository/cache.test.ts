@@ -1,4 +1,4 @@
-import Cache from "@/core/product-repository/application/cache"
+import Cache from "@/core/product-repository/cache"
 
 describe("Cache", () => {
   it("should set and get a value successfully", () => {

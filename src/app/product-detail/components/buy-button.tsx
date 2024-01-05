@@ -1,13 +1,12 @@
 import Link from "next/link"
 
-import { Product } from "@/types"
-import { Cart } from "@/core/cart/domain/cart"
+import { Product } from "@/core/product-repository/product"
 
-import cartService from "@/core/cart/application/cart-service"
+import cartService from "@/core/cart/cart-service"
 
+// hook to add UX behavior on cart calls. 
 function useCart() {
-  const service: Cart = cartService // Use the Cart interface
-
+  const service = cartService 
   return service
 }
 
@@ -28,7 +27,7 @@ const BuyButton: React.FC<BuyButtonProps> = ({ product }) => {
   return (
     <div className=" p-4 flex gap-2">
       <button onClick={() => cart.add(product)}>Add to Cart</button>
-      <Link href="/purchaseOrder" onClick={placeOrder}>
+      <Link href="/purchase-order" onClick={placeOrder}>
         <button>Buy</button>
       </Link>
     </div>

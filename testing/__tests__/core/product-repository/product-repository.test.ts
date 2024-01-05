@@ -1,5 +1,5 @@
 import mockedProduct from "../../../mocks/core/product"
-import ProductRepository from "@/core/product-repository/application/product-repository"
+import ProductRepository from "@/core/product-repository/product-repository"
 
 describe("ProductRepository Data Retrieval Interface", () => {
   let productRepository: ProductRepository

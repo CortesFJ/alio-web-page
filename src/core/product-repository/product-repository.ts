@@ -1,6 +1,5 @@
-import { HttpClient } from "../../http-client/ports"
-import Cache from "./cache"
-import { Product } from "../../../types"
+import { HttpClient } from "../http-client/ports"
+import { Product } from "./product"
 
 class ProductRepository {
   private readonly apiVersion: string = "v1"

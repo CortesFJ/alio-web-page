@@ -1,17 +1,16 @@
-import { Cart, CartState } from "@/core/cart/domain/cart"
-import { CartService } from "@/core/cart/application/cart-service"
+import { CartState } from "@/core/cart/cart"
+import { CartService } from "@/core/cart/cart-service"
 import mockedProduct from "../../../mocks/core/product"
 
 describe("CartService", () => {
-  let cart: Cart
-  let mockCartState: CartState
+  let cart = new CartService()
+  const defaultCurrency = "COP"
+  const defaultCartState = cart.getState()
+
+  mockedProduct.price.currency = defaultCurrency
 
   beforeEach(() => {
     cart = new CartService()
-    mockCartState = {
-      items: [],
-      totalPrice: { currency: "USD", amount: "0.00" },
-    }
   })
 
   const CartStateWhitOneProduct: CartState = {
@@ -33,7 +32,7 @@ describe("CartService", () => {
     const newQuantity = 5
     cart.add(mockedProduct, newQuantity)
     cart.remove(mockedProduct.id)
-    expect(cart.getState()).toEqual(mockCartState)
+    expect(cart.getState()).toEqual(defaultCartState)
   })
 
   it("updates the quantity of a product in the cart", () => {
@@ -54,5 +53,54 @@ describe("CartService", () => {
       },
     }
     expect(cart.getState()).toEqual(expectedUpdatedCartState)
+  })
+
+  it("emits the 'change' event when a product is added", (done) => {
+    const changeSpy = jest.fn()
+    cart.on("change", changeSpy)
+
+    cart.add(mockedProduct)
+
+    expect(changeSpy).toHaveBeenCalledTimes(1)
+    expect(cart.getState()).toEqual(CartStateWhitOneProduct)
+    done()
+  })
+
+  it("emits the 'change' event when a product is removed", (done) => {
+    const changeSpy = jest.fn()
+    cart.on("change", changeSpy)
+
+    cart.add(mockedProduct)
+    cart.remove(mockedProduct.id)
+
+    expect(changeSpy).toHaveBeenCalledTimes(2) // Once for adding, once for removing
+    expect(cart.getState()).toEqual(defaultCartState)
+    done()
+  })
+
+  it("emits the 'change' event when the quantity of a product is updated", (done) => {
+    const changeSpy = jest.fn()
+    cart.on("change", changeSpy)
+
+    const newQuantity = 5
+    cart.add(mockedProduct, newQuantity)
+
+    const expectedUpdatedCartState: CartState = {
+      items: [
+        {
+          product: mockedProduct,
+          quantity: newQuantity,
+        },
+      ],
+      totalPrice: {
+        currency: mockedProduct.price.currency,
+        amount: (parseFloat(mockedProduct.price.amount) * newQuantity).toFixed(
+          2
+        ),
+      },
+    }
+    expect(changeSpy).toHaveBeenCalledTimes(1)
+    expect(cart.getState()).toEqual(expectedUpdatedCartState)
+    done()
   })
 })

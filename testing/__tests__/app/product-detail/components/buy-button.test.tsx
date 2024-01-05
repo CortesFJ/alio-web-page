@@ -1,5 +1,5 @@
 import BuyButton from "@/app/product-detail/components/buy-button"
-import cartService from "@/core/cart/application/cart-service"
+import cartService from "@/core/cart/cart-service"
 
 import mockedProduct from "../../../../mocks/core/product"
 
@@ -10,7 +10,6 @@ describe.only("BuyButton component", () => {
     jest.clearAllMocks()
   })
 
-  const replace = jest.fn()
   jest.spyOn(cartService, "add")
 
   test("add product to cart if 'BuyButton' is clicked and product is not in cart ", () => {
@@ -41,16 +40,11 @@ describe.only("BuyButton component", () => {
     expect(cartService.add).toHaveBeenCalledTimes(1)
   })
 
-  test("if 'BuyButton' is clicked should redirect to payment gateway url using useRouter", async () => {
-
+  test("buy button should redirect to purchase-order page", () => {
     render(<BuyButton product={mockedProduct} />)
 
     const buyButton = screen.getByRole("link", { name: /buy/i })
 
-    fireEvent.click(buyButton)
-
-    await waitFor(() => {
-      expect(buyButton).toHaveAttribute("href", "/purchaseOrder")
-    })
+    expect(buyButton).toHaveAttribute("href", "/purchase-order")
   })
 })

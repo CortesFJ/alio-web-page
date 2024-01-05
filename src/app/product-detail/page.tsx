@@ -2,10 +2,10 @@
 import { useState, useEffect } from "react"
 import { usePathname, useRouter } from "next/navigation"
 
-import { Product, Variants } from "@/types"
+import { Product, Variants } from "@/core/product-repository/product"
 import ProductDescription from "./components/product-description"
 import VariantSelection from "./components/variant-selection"
-import cartService from "@/core/cart/application/cart-service"
+import cartService from "@/core/cart/cart-service"
 import mockedProduct, {
   mockedProducts,
 } from "../../../testing/mocks/core/product"

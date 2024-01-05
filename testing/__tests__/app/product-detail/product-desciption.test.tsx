@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react"
 
 import ProductDescription from "@/app/product-detail/components/product-description"
-// import Carousel from "@/app/product-detail/components/carousel"
 import mockedProduct from "../../../mocks/core/product"
 import mockRouter from "next-router-mock"
 

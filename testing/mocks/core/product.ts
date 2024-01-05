@@ -1,4 +1,4 @@
-import { Product } from "@/types"
+import { Product } from "@/core/product-repository/product"
 
 const mockedProduct: Product = {
   id: "1",
