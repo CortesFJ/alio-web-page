@@ -42,43 +42,58 @@ const CartView = () => {
 
   return (
     <>
-      <h2>Cart Summary</h2>
-      <ul>
-        {cartState.items.map((item) => {
-          const { newAmount, newCurrency } = updateCurrency(item.product.price)
-          return (
-            <li key={item.product.id}>
-              <div>
-                <p>{item.product.name}</p>
-                <p>{`Unit Price: ${newCurrency.symbol} ${newAmount.toFixed(
-                  2
-                )}`}</p>
-                <p>{`Total Price: ${newCurrency.symbol} ${(
-                  newAmount * item.quantity
-                ).toFixed(2)}`}</p>
-                <label htmlFor={`units-item ${item.product.id}`}>Units</label>
-                <input
-                  id={`units-item ${item.product.id}`}
-                  type="number"
-                  min={1}
-                  max={item.product.stock}
-                  role="spinbutton"
-                  value={item.quantity}
-                  onChange={(e) =>
-                    handleQuantityChange(item.product, Number(e.target.value))
-                  }
-                />
-              </div>
-              <button onClick={() => cartService.remove(item.product.id)}>
-                remove
-              </button>
-            </li>
-          )
-        })}
-      </ul>
-      <p>
-        Total: {cartState.totalPrice.currency} {cartState.totalPrice.amount}
-      </p>
+      {cartState.items.length === 0 ? (
+        <p>
+          Your cart is empty. <button>Go to shop</button>
+        </p>
+      ) : (
+        <>
+          <h2>Cart Summary</h2>
+          <ul>
+            {cartState.items.map((item) => {
+              const { newAmount, newCurrency } = updateCurrency(
+                item.product.price
+              )
+              return (
+                <li key={item.product.id}>
+                  <div>
+                    <p>{item.product.name}</p>
+                    <p>{`Unit Price: ${newCurrency.symbol} ${newAmount.toFixed(
+                      2
+                    )}`}</p>
+                    <p>{`Total Price: ${newCurrency.symbol} ${(
+                      newAmount * item.quantity
+                    ).toFixed(2)}`}</p>
+                    <label htmlFor={`units-item ${item.product.id}`}>
+                      Units
+                    </label>
+                    <input
+                      id={`units-item ${item.product.id}`}
+                      type="number"
+                      min={1}
+                      max={item.product.stock}
+                      role="spinbutton"
+                      value={item.quantity}
+                      onChange={(e) =>
+                        handleQuantityChange(
+                          item.product,
+                          Number(e.target.value)
+                        )
+                      }
+                    />
+                  </div>
+                  <button onClick={() => cartService.remove(item.product.id)}>
+                    remove
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
+          <p>
+            Total: {cartState.totalPrice.currency} {cartState.totalPrice.amount}
+          </p>
+        </>
+      )}
     </>
   )
 }

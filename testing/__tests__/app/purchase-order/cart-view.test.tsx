@@ -124,7 +124,27 @@ describe("CartView component", () => {
     expect(quantityInput.value).toBe(initialValue.toString())
   })
 
-  // test("cannot load the cart with more units than those available per product", () => {
+  test("Display a clear message when the cart is empty", () => {
+    render(<CartView />)
+
+    const emptyCartMessage = screen.getByText(/Your cart is empty/i)
+    expect(emptyCartMessage).toBeInTheDocument()
+
+    expect(screen.queryByRole("list")).not.toBeInTheDocument()
+    expect(screen.queryByRole("spinbutton")).not.toBeInTheDocument()
+    expect(screen.queryByText(/Total/i)).not.toBeInTheDocument()
+  })
+
+  test("When the cart is empty, display a message and a call to action in a button", () => {
+    render(<CartView />)
+
+    expect(screen.queryByRole("list")).not.toBeInTheDocument() // No cart items list
+    expect(screen.getByText(/Your cart is empty/i)).toBeInTheDocument() // Empty message
+    const goToShopButton = screen.getByRole("button", { name: /Go to shop/i })
+    expect(goToShopButton).toBeInTheDocument()
+  })
+
+  // test("Display a clear message when the cart is empty", () => {
 
   // })
 })
