@@ -55,6 +55,18 @@ describe("CartService", () => {
     expect(cart.getState()).toEqual(expectedUpdatedCartState)
   })
 
+  it("don't update invalid quantities", () => {
+    const maxQuantity = mockedProduct.stock
+
+    cart.add(mockedProduct)
+
+    cart.add(mockedProduct, -1)
+    expect(cart.getState()).toEqual(CartStateWhitOneProduct)
+
+    cart.add(mockedProduct, maxQuantity + 1)
+    expect(cart.getState()).toEqual(CartStateWhitOneProduct)
+  })
+
   it("emits the 'change' event when a product is added", (done) => {
     const changeSpy = jest.fn()
     cart.on("change", changeSpy)

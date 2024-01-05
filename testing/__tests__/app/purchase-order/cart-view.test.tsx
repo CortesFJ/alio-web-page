@@ -83,7 +83,48 @@ describe("CartView component", () => {
     expect(screen.queryByText(mockedProducts[0].name)).not.toBeInTheDocument()
   })
 
-  // test("products in cart can be removed", () => {
+  test("name, unit price and total price for every product is displayed", () => {
+    cartService.add(mockedProducts[0], 3)
+    cartService.add(mockedProducts[1])
+
+    render(<CartView />)
+
+    const productItems = screen.getAllByRole("listitem")
+    const firstProductItem = productItems[0]
+
+    expect(firstProductItem).toHaveTextContent(mockedProducts[0].name)
+    expect(
+      screen.getByText(
+        `Unit Price: $ ${parseFloat(mockedProducts[0].price.amount).toFixed(2)}`
+      )
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText(
+        `Total Price: $ ${(
+          parseFloat(mockedProducts[0].price.amount) * 3
+        ).toFixed(2)}`
+      )
+    ).toBeInTheDocument()
+  })
+
+  test("cannot load the cart with more units than those available per product", () => {
+    const product = mockedProducts[0]
+    const initialValue = product.stock
+
+    cartService.add(product, initialValue)
+
+    render(<CartView />)
+
+    const quantityInput: HTMLElement & { value: string } =
+      screen.getByRole("spinbutton")
+
+    fireEvent.change(quantityInput, { target: { value: initialValue + 1 } })
+
+    expect(cartService.getState().items[0].quantity).toBe(initialValue)
+    expect(quantityInput.value).toBe(initialValue.toString())
+  })
+
+  // test("cannot load the cart with more units than those available per product", () => {
 
   // })
 })

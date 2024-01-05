@@ -1,17 +1,8 @@
-import { Product, Price } from "@/core/product-repository/product"
+import { Product } from "@/core/product-repository/product"
 import Carousel from "./carousel"
+import { updateCurrency } from "@/app/hooks/update-currency"
 
 const ProductDescription = ({ product }: { product: Product }) => {
-  const updateCurrency = (
-    price: Price,
-    newCurrency?: Record<string, string>
-  ) => {
-    newCurrency = { currency: "COP", symbol: "$" }
-    const newAmount = price.amount
-
-    return { newCurrency, newAmount }
-  }
-
   const { newCurrency, newAmount } = updateCurrency(product.price)
 
   return (
@@ -24,7 +15,7 @@ const ProductDescription = ({ product }: { product: Product }) => {
         <p>{product.description}</p>
         <p>
           Price: {newCurrency.symbol}
-          {newAmount}
+          {newAmount.toFixed(2)}
         </p>
         <p>In Stock: {product.stock}</p>
       </section>

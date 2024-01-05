@@ -30,6 +30,9 @@ export class CartService implements Cart {
   }
 
   add(product: Product, quantity: number = 1): void {
+    if (quantity <= 0 || quantity > product.stock) {
+      return
+    }
     const updatedItems: CartItem[] = [...this.state.items]
     const existingItemIndex = updatedItems.findIndex(
       (item) => item.product.id === product.id

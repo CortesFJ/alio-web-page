@@ -31,8 +31,8 @@ describe("Product Detail Page", () => {
 
   it("displays the product price", () => {
     renderProductDescription()
-    const price = mockedProduct.price.amount
-    const productPriceElement = screen.getByText(`Price: $${price}`)
+    const price =parseFloat(mockedProduct.price.amount)
+    const productPriceElement = screen.getByText(`Price: $${price.toFixed(2)}`)
     expect(productPriceElement).toBeInTheDocument()
   })
 
