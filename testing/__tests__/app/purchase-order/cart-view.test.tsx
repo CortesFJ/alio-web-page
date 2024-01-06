@@ -138,13 +138,26 @@ describe("CartView component", () => {
   test("When the cart is empty, display a message and a call to action in a button", () => {
     render(<CartView />)
 
-    expect(screen.queryByRole("list")).not.toBeInTheDocument() // No cart items list
-    expect(screen.getByText(/Your cart is empty/i)).toBeInTheDocument() // Empty message
+    expect(screen.queryByRole("list")).not.toBeInTheDocument()
+    expect(screen.getByText(/Your cart is empty/i)).toBeInTheDocument()
     const goToShopButton = screen.getByRole("button", { name: /Go to shop/i })
     expect(goToShopButton).toBeInTheDocument()
   })
 
-  // test("Display a clear message when the cart is empty", () => {
+  test("The name of every product should be a link to the store for itself", () => {
+    cartService.add(mockedProducts[0])
 
-  // })
+    render(<CartView />)
+    const productLink: (HTMLElement & { href: string }) | null =
+      screen.queryByRole("link")
+
+    Object.values(mockedProducts[0].variants).forEach((option) => {
+      if (productLink) {
+        const regex = new RegExp(`.*${option}.*`)
+        expect(productLink.href).toMatch(regex)
+      } else {
+        expect(screen.queryByRole("link")).not.toBeInTheDocument()
+      }
+    })
+  })
 })

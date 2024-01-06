@@ -1,13 +1,23 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import Link from "next/link"
+
 import cartService from "@/core/cart/cart-service"
 import { CartState } from "@/core/cart/cart"
-import { Product } from "@/core/product-repository/product"
+import { Product, Variants } from "@/core/product-repository/product"
 import { updateCurrency } from "../hooks/update-currency"
 
 const CartView = () => {
   const [cartState, setCartState] = useState<CartState>(cartService.getState())
+  const params = new URLSearchParams()
+
+  function createUrlPath(variants: Variants):string {
+    Object.entries(variants).forEach(([vName, option]) => {
+      params.set(vName, option)
+    })
+    return `/product-detail?${params.toString()}`
+  }
 
   useEffect(() => {
     const handleCartChange = () => {
@@ -57,7 +67,9 @@ const CartView = () => {
               return (
                 <li key={item.product.id}>
                   <div>
-                    <p>{item.product.name}</p>
+                    <Link href={createUrlPath(item.product.variants)}>
+                      <p>{item.product.name}</p>
+                    </Link>
                     <p>{`Unit Price: ${newCurrency.symbol} ${newAmount.toFixed(
                       2
                     )}`}</p>
