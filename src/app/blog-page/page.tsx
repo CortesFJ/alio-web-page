@@ -1,54 +1,58 @@
 import { ReactNode } from "react"
 import Image from "next/image"
 
-interface BlogPageSection {
-  node: ReactNode
-  title: string
-}
-
-type InfoSection = {
+export type InfoSection = {
   image: { url: string; description: string }
   paragraphs: string[]
 }
 
-type BlogSectionContent = {
+export type BlogSectionContent = {
   title: string
   content: InfoSection[]
 }
 
-const BlogSection = ({
+export interface BlogPageSection {
+  htmlContent: ReactNode
+  title: string
+}
+
+export const createBlogSection = ({
   title,
   content,
 }: BlogSectionContent): BlogPageSection => {
-  const DisplayContent = () => {
-    return (
-      <>
-        {content.map(({ image, paragraphs }) => (
-          <section>
-            <Image src={image.url} alt={image.description} />
-            <div>
-              {paragraphs.map((para) => (
-                <p>{para}</p>
-              ))}
-            </div>
-          </section>
-        ))}
-      </>
-    )
-  }
-  return { node: DisplayContent(), title }
+  const Content = (
+    <>
+      {content.map(({ image, paragraphs }, idx) => (
+        <section key={idx}>
+          <Image
+            src={image.url}
+            alt={image.description}
+            width={200}
+            height={200}
+          />
+          <div>
+            {paragraphs.map((para, i) => (
+              <p key={i}>{para}</p>
+            ))}
+          </div>
+        </section>
+      ))}
+    </>
+  )
+  return { htmlContent: Content, title }
 }
 
-interface BlogPageProps {
+export interface BlogPageProps {
   sections: BlogPageSection[]
 }
 
 const BlogPage: React.FC<BlogPageProps> = ({ sections }) => {
-  return sections.map(({ title, node }: BlogPageSection) => (
-    <article>
+  return sections.map(({ title, htmlContent }: BlogPageSection) => (
+    <article key={title}>
       <h1>{title}</h1>
-      {node}
+      {htmlContent}
     </article>
   ))
 }
 export default BlogPage
+
