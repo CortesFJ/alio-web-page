@@ -11,6 +11,9 @@ const Header = () => {
         <Link href={"/"}>
           <Button variant="link">Home</Button>
         </Link>
+        <Link href={"/product-detail"}>
+          <Button variant="link">Catalogue</Button>
+        </Link>
       </nav>
       <Separator />
     </>

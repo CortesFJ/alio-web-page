@@ -1,14 +1,15 @@
 import { ReactNode } from "react"
 import Image from "next/image"
 
-export type InfoSection = {
+export type SectionInfo = {
+  subtitle: string
   image: { url: string; description: string }
   paragraphs: string[]
 }
 
-export type BlogSectionContent = {
+export type BlogDataContent = {
   title: string
-  content: InfoSection[]
+  content: SectionInfo[]
 }
 
 export interface BlogPageSection {
@@ -19,11 +20,12 @@ export interface BlogPageSection {
 export const createBlogSection = ({
   title,
   content,
-}: BlogSectionContent): BlogPageSection => {
+}: BlogDataContent): BlogPageSection => {
   const Content = (
     <>
-      {content.map(({ image, paragraphs }, idx) => (
+      {content.map(({ image, paragraphs, subtitle }, idx) => (
         <section key={idx}>
+          {subtitle ? <h2>{subtitle}</h2> : null}
           <Image
             src={image.url}
             alt={image.description}
@@ -47,12 +49,15 @@ export interface BlogPageProps {
 }
 
 const BlogPage: React.FC<BlogPageProps> = ({ sections }) => {
-  return sections.map(({ title, htmlContent }: BlogPageSection) => (
-    <article key={title}>
-      <h1>{title}</h1>
-      {htmlContent}
-    </article>
-  ))
+  try {
+    return sections.map(({ title, htmlContent }: BlogPageSection) => (
+      <article key={title}>
+        <h1>{title}</h1>
+        {htmlContent}
+      </article>
+    ))
+  } catch {
+    return null
+  }
 }
 export default BlogPage
-
