@@ -40,11 +40,11 @@ describe.only("BuyButton component", () => {
     expect(cartService.add).toHaveBeenCalledTimes(1)
   })
 
-  test("buy button should redirect to purchase-order page", () => {
+  test("buy button should redirect to cart page", () => {
     render(<BuyButton product={mockedProduct} />)
 
     const buyButton = screen.getByRole("link", { name: /buy/i })
 
-    expect(buyButton).toHaveAttribute("href", "/purchase-order")
+    expect(buyButton).toHaveAttribute("href", "/cart")
   })
 })

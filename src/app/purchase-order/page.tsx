@@ -1,7 +1,6 @@
-import CartView from "./cart-view"
 
 const PurchaseOrder = () => {
-  return <CartView />
+  return <>Purchase Order</> 
 }
 
 export default PurchaseOrder

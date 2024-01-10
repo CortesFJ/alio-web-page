@@ -27,7 +27,7 @@ const BuyButton: React.FC<BuyButtonProps> = ({ product }) => {
   return (
     <div className=" p-4 flex gap-2">
       <button onClick={() => cart.add(product)}>Add to Cart</button>
-      <Link href="/purchase-order" onClick={placeOrder}>
+      <Link href="/cart" onClick={placeOrder}>
         <button>Buy</button>
       </Link>
     </div>

@@ -1,6 +1,6 @@
-import CartView from "@/app/purchase-order/cart-view"
+import CartView from "@/app/cart/page"
 import cartService from "@/core/cart/cart-service"
-import { render, screen, fireEvent, waitFor } from "@testing-library/react"
+import { render, screen, fireEvent } from "@testing-library/react"
 import { mockedProducts } from "../../../mocks/core/product"
 import { act } from "react-dom/test-utils"
 
@@ -143,21 +143,33 @@ describe("CartView component", () => {
     const goToShopButton = screen.getByRole("button", { name: /Go to shop/i })
     expect(goToShopButton).toBeInTheDocument()
   })
-
-  test("The name of every product should be a link to the store for itself", () => {
+  test("The name of every product should be a link to the store", () => {
     cartService.add(mockedProducts[0])
 
     render(<CartView />)
-    const productLink: (HTMLElement & { href: string }) | null =
-      screen.queryByRole("link")
+
+    const productLink = screen.getByRole("link", {
+      name: mockedProducts[0].name,
+    })
 
     Object.values(mockedProducts[0].variants).forEach((option) => {
-      if (productLink) {
-        const regex = new RegExp(`.*${option}.*`)
-        expect(productLink.href).toMatch(regex)
-      } else {
-        expect(screen.queryByRole("link")).not.toBeInTheDocument()
-      }
+      const regex = new RegExp(`.*product-detail.*${option}.*`)
+      expect(productLink).toHaveAttribute("href", expect.stringMatching(regex))
     })
+  })
+
+  test("A link to continue the purchase is displayed", () => {
+    cartService.add(mockedProducts[0])
+
+    render(<CartView />)
+
+    const continueLink = screen.getByRole("link", {
+      name: /Continue purchase/i,
+    })
+    expect(continueLink).toBeInTheDocument()
+    expect(continueLink).toHaveAttribute(
+      "href",
+      expect.stringMatching("purchase-order")
+    )
   })
 })

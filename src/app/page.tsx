@@ -1,6 +1,11 @@
-import { redirect } from "next/navigation"
+import Home from "./home"
 
-const Home = () => {
-  redirect("/product-detail")
+const App = () => {
+  return (
+    <>
+      <Home />
+    </>
+  )
 }
-export default Home
+
+export default App
