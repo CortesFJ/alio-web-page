@@ -3,17 +3,14 @@ import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
-const Header = () => {
+const Header = ({ links }: { links: { href: string; lName: string }[] }) => {
   return (
     <>
-      <nav className=" flex justify-between bg-secondary py-4">
+      <nav className=" flex justify-evenly sticky top-0 bg-gray-600 py-4 ">
         <h1>HEADER</h1>
-        <Link href={"/"}>
-          <Button variant="link">Home</Button>
-        </Link>
-        <Link href={"/product-detail"}>
-          <Button variant="link">Catalogue</Button>
-        </Link>
+        {links.map((item) => (
+          <Link href={item.href}>{item.lName}</Link>
+        ))}
       </nav>
       <Separator />
     </>

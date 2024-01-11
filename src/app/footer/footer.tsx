@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <>
       <Separator />
-      <div className=" flex justify-between bg-secondary py-4">
+      <div className=" flex justify-between bg-gray-600 py-4">
         <h1>FOOTER</h1>
         <Button variant="link">Contact</Button>
       </div>

@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react"
 
-import BlogPage, { createBlogSection, SectionInfo } from "@/app/blog-page/page"
-import { fakeData1, fakeData2 } from "../../../mocks/app/blog-page"
+import BlogPage, { createBlogSection, SectionInfo } from "@/components/BlogPage"
+import { fakeData1, fakeData2 } from "../../mocks/app/blog-page"
 
 describe("BlogPage component", () => {
   test("renders multiple sections", () => {
@@ -31,7 +31,7 @@ describe("createBlogSection function", () => {
     fakeData1.content.forEach(
       ({ image, paragraphs, subtitle }: SectionInfo) => {
         if (subtitle) {
-          expect(screen.getByAltText(subtitle)).toBeInTheDocument()
+          expect(screen.getByText(subtitle)).toBeInTheDocument()
         }
         expect(screen.getByAltText(image.description)).toBeInTheDocument()
         expect(

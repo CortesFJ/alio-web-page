@@ -31,7 +31,11 @@ export const mockedProducts: Product[] = [
     name: "Yet Another Product",
     description: "Description for yet another product.",
     price: { currency: "GBP", amount: "30.25" },
-    imageUrls: ["/item-01.jpeg", "/item-02.jpeg", "/item-03.jpeg"],
+    imageUrls: [
+      "https://picsum.photos/600/400?random=4",
+      "https://picsum.photos/600/400?random=9",
+      "https://picsum.photos/600/400?random=1",
+    ],
     variants: {
       Color: "Green",
       Size: "Large",
@@ -43,7 +47,11 @@ export const mockedProducts: Product[] = [
     name: "Some Product",
     description: "Description for some product.",
     price: { currency: "GBP", amount: "60.05" },
-    imageUrls: ["/item-01.jpeg", "/item-02.jpeg", "/item-03.jpeg"],
+    imageUrls: [
+      "https://picsum.photos/600/400?random=5",
+      "https://picsum.photos/600/400?random=7",
+      "https://picsum.photos/600/400?random=1",
+    ],
     variants: {
       Color: "Green",
       Size: "Small",
@@ -60,9 +68,9 @@ export const mockedWallets: Product[] = [
       "Handcrafted full-grain leather bifold with a sleek minimalist design. Features internal pockets for cards and bills, plus a hidden money clip. Available in classic black, rich brown, and bold tan.",
     price: { currency: "USD", amount: "249.99" },
     imageUrls: [
-      "/leather-bifold-black.jpg",
-      "/leather-bifold-brown.jpg",
-      "/leather-bifold-tan.jpg",
+      "https://picsum.photos/600/400?random=2",
+      "https://picsum.photos/600/400?random=6",
+      "https://picsum.photos/600/400?random=1",
     ],
     variants: { Color: "Brown", Material: "Leather" },
     stock: 50,
@@ -74,9 +82,9 @@ export const mockedWallets: Product[] = [
       "Ultra-thin and lightweight cardholder made from recycled aluminum. Securely holds up to 12 cards with RFID blocking technology. Available in matte black, brushed silver, and anodized rose gold.",
     price: { currency: "USD", amount: "49.99" },
     imageUrls: [
-      "/aluminum-cardholder-black.jpg",
-      "/aluminum-cardholder-silver.jpg",
-      "/aluminum-cardholder-rose-gold.jpg",
+      "https://picsum.photos/600/400?random=2",
+      "https://picsum.photos/600/400?random=7",
+      "https://picsum.photos/600/400?random=1",
     ],
     variants: { Color: "Black", Material: "Aluminum" },
     stock: 100,
@@ -87,7 +95,11 @@ export const mockedWallets: Product[] = [
     description:
       "Durable canvas zip wallet with a fun, travel-inspired print. Features multiple compartments for cards, bills, and receipts. Available in blue and tan patterns.",
     price: { currency: "USD", amount: "34.99" },
-    imageUrls: ["/canvas-wallet-blue.jpg", "/canvas-wallet-tan.jpg"],
+    imageUrls: [
+      "https://picsum.photos/600/400?random=5",
+      "https://picsum.photos/600/400?random=4",
+      "https://picsum.photos/600/400?random=1",
+    ],
     variants: { Color: "Tan", Material: "Canvas" },
     stock: 200,
   },
@@ -98,8 +110,9 @@ export const mockedWallets: Product[] = [
       "Stainless steel money clip combined with a sleek leather cardholder. Securely holds cash and up to 6 cards. Available in polished silver and matte black.",
     price: { currency: "USD", amount: "69.99" },
     imageUrls: [
-      "/steel-money-clip-cardholder-silver.jpg",
-      "/steel-money-clip-cardholder-black.jpg",
+      "https://picsum.photos/600/400?random=3",
+      "https://picsum.photos/600/400?random=8",
+      "https://picsum.photos/600/400?random=1",
     ],
     variants: { Color: "Black", Material: "Stainless Steel" },
     stock: 75,
@@ -110,7 +123,11 @@ export const mockedWallets: Product[] = [
     description:
       "Crafted from recycled water bottles, this vegan leather wallet offers sustainable style. Features RFID blocking and multiple compartments for cards and bills. Available in forest green and charcoal grey.",
     price: { currency: "USD", amount: "54.99" },
-    imageUrls: ["/recycled-wallet-green.jpg", "/recycled-wallet-grey.jpg"],
+    imageUrls: [
+      "https://picsum.photos/600/400?random=9",
+      "https://picsum.photos/600/400?random=3",
+      "https://picsum.photos/600/400?random=1",
+    ],
     variants: { Color: "Green", Material: "Recycled PET Leather" },
     stock: 150,
   },
@@ -120,7 +137,11 @@ export const mockedWallets: Product[] = [
     description:
       "Crafted from recycled water bottles, this vegan leather wallet offers sustainable style. Features RFID blocking and multiple compartments for cards and bills. Available in forest green and charcoal grey.",
     price: { currency: "USD", amount: "54.99" },
-    imageUrls: ["/recycled-wallet-green.jpg", "/recycled-wallet-grey.jpg"],
+    imageUrls: [
+      "https://picsum.photos/600/400?random=7",
+      "https://picsum.photos/600/400?random=8",
+      "https://picsum.photos/600/400?random=1",
+    ],
     variants: { Color: "Blue", Material: "Recycled PET Leather" },
     stock: 150,
   },
@@ -131,8 +152,9 @@ export const mockedWallets: Product[] = [
       "Stainless steel money clip combined with a sleek leather cardholder. Securely holds cash and up to 6 cards. Available in polished silver and matte black.",
     price: { currency: "USD", amount: "69.99" },
     imageUrls: [
-      "/steel-money-clip-cardholder-silver.jpg",
-      "/steel-money-clip-cardholder-black.jpg",
+      "https://picsum.photos/600/400?random=6",
+      "https://picsum.photos/600/400?random=2",
+      "https://picsum.photos/600/400?random=1",
     ],
     variants: { Color: "Black", Material: "Leather" },
     stock: 75,
@@ -143,7 +165,11 @@ export const mockedWallets: Product[] = [
     description:
       "Crafted from recycled water bottles, this vegan leather wallet offers sustainable style. Features RFID blocking and multiple compartments for cards and bills. Available in forest green and charcoal grey.",
     price: { currency: "USD", amount: "54.99" },
-    imageUrls: ["/recycled-wallet-green.jpg", "/recycled-wallet-grey.jpg"],
+    imageUrls: [
+      "https://picsum.photos/600/400?random=5",
+      "https://picsum.photos/600/400?random=4",
+      "https://picsum.photos/600/400?random=1",
+    ],
     variants: { Color: "Green", Material: "Leather" },
     stock: 150,
   },
@@ -153,7 +179,11 @@ export const mockedWallets: Product[] = [
     description:
       "Crafted from recycled water bottles, this vegan leather wallet offers sustainable style. Features RFID blocking and multiple compartments for cards and bills. Available in forest green and charcoal grey.",
     price: { currency: "USD", amount: "54.99" },
-    imageUrls: ["/recycled-wallet-green.jpg", "/recycled-wallet-grey.jpg"],
+    imageUrls: [
+      "https://picsum.photos/600/400?random=3",
+      "https://picsum.photos/600/400?random=2",
+      "https://picsum.photos/600/400?random=1",
+    ],
     variants: { Color: "Blue", Material: "Leather" },
     stock: 150,
   },

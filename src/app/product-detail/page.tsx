@@ -119,7 +119,7 @@ const ProductDetail: React.FC<productDetailProps> = ({
   return (
     <>
       {currentProduct ? (
-        <div className="border border-red-600  m-4">
+        <div className="border border-red-600 m-4">
           <ProductDescription product={currentProduct} />
           <VariantSelection
             variantsList={products.map((p) => p.variants)}

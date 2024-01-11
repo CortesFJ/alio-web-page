@@ -1,20 +1,18 @@
-import Header from "./header/header"
-import BlogPage from "./blog-page/page"
+import BlogPage from "../components/BlogPage"
 
 // JUST TO TEST
-import { fakeData1, fakeData2 } from "../../testing/mocks/app/blog-page"
-import { createBlogSection } from "./blog-page/page"
+import { fakeData1 } from "../../testing/mocks/app/blog-page"
+import { createBlogSection } from "../components/BlogPage"
 
 // JUST TO TEST
-const Sections = [createBlogSection(fakeData1), createBlogSection(fakeData2)]
+const Sections = [createBlogSection(fakeData1)]
 
-const App = () => {
+const Home = () => {
   return (
     <>
-      <Header />
       <BlogPage sections={Sections} />
     </>
   )
 }
 
-export default App
+export default Home

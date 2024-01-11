@@ -1,4 +1,4 @@
-import { BlogDataContent } from "@/app/blog-page/page"
+import { BlogDataContent } from "@/components/BlogPage"
 
 export const fakeData1: BlogDataContent = {
   title: "Exciting Adventures",
