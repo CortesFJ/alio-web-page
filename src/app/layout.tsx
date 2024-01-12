@@ -18,13 +18,14 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="es" suppressHydrationWarning className="">
-      <body className={`${inter.className} bg-gray-800 text-slate-200`}>
+    <html lang="es" suppressHydrationWarning>
+      <body className={`${inter.className} `}>
         <Header
           links={[
             { href: "/", lName: "Home" },
             { href: "/blog-page", lName: "About us" },
             { href: "/product-detail", lName: "Catalogue" },
+            { href: "/cart", lName: "Cart" },
           ]}
         />
         {children}

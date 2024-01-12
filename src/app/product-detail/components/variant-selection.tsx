@@ -1,4 +1,3 @@
-import { useRef } from "react"
 import { Variants } from "@/core/product-repository/product"
 import { useSearchParams, usePathname, useRouter } from "next/navigation"
 
@@ -7,7 +6,6 @@ const displayOptions = (
   options: string[],
   availableOptions: string | string[]
 ) => {
-  const myElementRef = useRef(null)
   const pathname = usePathname()
   const { replace } = useRouter()
   const searchParams = useSearchParams()
@@ -25,7 +23,7 @@ const displayOptions = (
   }
 
   return (
-    <li ref={myElementRef} key={variantName}>
+    <li key={variantName}>
       <h3>{variantName}</h3>
       {options.length === 1 ? (
         <span>{options[0]}</span>
@@ -102,7 +100,7 @@ const VariantSelection: React.FC<VariantSelectionProps> = ({
             ? "all"
             : variantName in possibleOptions
             ? possibleOptions[variantName]
-            : []
+            : "none"
 
         return displayOptions(variantName, options, availableOptions)
       })}
