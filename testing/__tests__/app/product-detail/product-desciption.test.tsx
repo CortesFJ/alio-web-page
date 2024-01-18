@@ -2,13 +2,10 @@ import { render, screen } from "@testing-library/react"
 
 import ProductDescription from "@/app/product-detail/components/product-description"
 import mockedProduct from "../../../mocks/core/product"
-import mockRouter from "next-router-mock"
 
-jest.mock("next/navigation", () => jest.requireActual("next-router-mock"))
 jest.mock("@/app/product-detail/components/carousel")
 
 describe("Product Detail Page", () => {
-  mockRouter.push("/product-detail")
 
   const renderProductDescription = () =>
     render(<ProductDescription product={mockedProduct} />)

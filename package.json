@@ -28,6 +28,7 @@
     "prop-types": "^15.8.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "resend": "2.0.0",
     "tailwind-merge": "^1.14.0",
     "tailwindcss": "3.3.3",
     "tailwindcss-animate": "^1.0.7",
@@ -40,8 +41,7 @@
     "@types/jest": "^29.5.4",
     "@types/prop-types": "^15.7.5",
     "jest": "^29.6.4",
-    "jest-environment-jsdom": "^29.6.4",
-    "next-router-mock": "^0.9.10"
+    "jest-environment-jsdom": "^29.6.4"
   },
   "prettier": {
     "semi": false

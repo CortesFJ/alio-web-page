@@ -7,8 +7,10 @@ const Header = ({ links }: { links: { href: string; lName: string }[] }) => {
     <>
       <nav className=" flex justify-evenly bg-gray-600 py-4 ">
         <h1>HEADER</h1>
-        {links.map((item) => (
-          <Link href={item.href}>{item.lName}</Link>
+        {links.map((item, i) => (
+          <Link key={i} href={item.href}>
+            {item.lName}
+          </Link>
         ))}
       </nav>
       <Separator />
