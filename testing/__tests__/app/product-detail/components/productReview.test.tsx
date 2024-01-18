@@ -50,7 +50,8 @@ describe("ReviewCart component", () => {
     expect(
       screen.getByText(new Date(mockReview.createdAt).toLocaleDateString())
     ).toBeInTheDocument()
-    
+    expect(screen.getByText("Thank you for your feedback!")).toBeInTheDocument()
+    expect(screen.getByText("You're welcome!")).toBeInTheDocument()
   })
 
   test("when there are a tread of messages in the review, renders it properly", () => {})

@@ -39,13 +39,27 @@ export const ReviewCard = ({ review }: { review: Review }) => {
       <div className="review-content">
         <p>{review.text}</p>
       </div>
+      {review.messages?.length && (
+        <ul className="message-thread">
+          {review.messages.map((message, i) => (
+            <li key={i} className="message">
+              <div className="message-content">{message.text}</div>
+              <div className="message-meta">
+                <span className="sender">{message.sender}</span>
+                <span className="date">
+                  {new Date(message.createdAt).toLocaleDateString()}
+                </span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   )
 }
 
-
 interface ReviewListProps {
-  reviews: Review[];
+  reviews: Review[]
 }
 
 const ReviewList = ({ reviews }: ReviewListProps) => (
@@ -54,7 +68,6 @@ const ReviewList = ({ reviews }: ReviewListProps) => (
       <ReviewCard key={review.id} review={review} />
     ))}
   </div>
-);
+)
 
-export default ReviewList;
-
+export default ReviewList
