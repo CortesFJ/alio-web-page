@@ -6,7 +6,7 @@ type User = {
 }
 
 interface Message {
-  sender: string
+  sender: 'seller' | 'customer' | 'admin'
   text: string
   createdAt: Date
 }
@@ -25,49 +25,53 @@ export type Review = {
 }
 
 export const ReviewCard = ({ review }: { review: Review }) => {
-  const formattedDate = new Date(review.createdAt).toLocaleDateString()
+  const formattedDate = new Date(review.createdAt).toLocaleDateString();
 
   return (
-    <div data-testid={review.id} className="review-card">
+    <article data-testid={review.id} className="review-card">
       <header>
         <div className="reviewer-info">
-          <span className="name">{review.user.name}</span>
-          <span className="rating">{review.rating} stars</span>
+          <h4 className="name">{review.user.name}</h4>
+          <p className="rating">{review.rating} stars</p>
         </div>
-        <span className="date">{formattedDate}</span>
+        <time className="date" dateTime={review.createdAt.toISOString()}>
+          {formattedDate}
+        </time>
       </header>
-      <div className="review-content">
+      <section className="review-content">
         <p>{review.text}</p>
-      </div>
+      </section>
       {review.messages?.length && (
-        <ul className="message-thread">
-          {review.messages.map((message, i) => (
-            <li key={i} className="message">
-              <div className="message-content">{message.text}</div>
-              <div className="message-meta">
-                <span className="sender">{message.sender}</span>
-                <span className="date">
-                  {new Date(message.createdAt).toLocaleDateString()}
-                </span>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <section className="message-thread">
+          <ul>
+            {review.messages.map((message, i) => (
+              <li key={i} className="message">
+                <p className="message-content">{message.text}</p>
+                <div className="message-meta">
+                  <span className="sender">{message.sender}</span>
+                  <time className="date" dateTime={message.createdAt.toISOString()}>
+                    {new Date(message.createdAt).toLocaleDateString()}
+                  </time>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
       )}
-    </div>
-  )
-}
+    </article>
+  );
+};
 
 interface ReviewListProps {
-  reviews: Review[]
+  reviews: Review[];
 }
 
 const ReviewList = ({ reviews }: ReviewListProps) => (
-  <div className="review-list">
+  <section className="review-list">
     {reviews.map((review) => (
       <ReviewCard key={review.id} review={review} />
     ))}
-  </div>
-)
+  </section>
+);
 
-export default ReviewList
+export default ReviewList;

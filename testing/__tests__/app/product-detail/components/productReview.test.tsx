@@ -16,7 +16,7 @@ const mockReviews: Review[] = [
         createdAt: new Date("2024-01-18"),
       },
       {
-        sender: "user",
+        sender: "customer",
         text: "You're welcome!",
         createdAt: new Date("2024-01-19"),
       },
@@ -54,7 +54,7 @@ describe("ReviewCart component", () => {
     expect(screen.getByText("You're welcome!")).toBeInTheDocument()
   })
 
-  test("when there are a tread of messages in the review, renders it properly", () => {})
+  test("", () => {})
 })
 
 test("Renders all review cards with correct information", () => {
