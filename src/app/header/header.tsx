@@ -1,18 +1,94 @@
 "use client"
-import { Separator } from "@/components/ui/separator"
 import Link from "next/link"
+import { ModeToggle } from "@/components/theme/toggle"
+import { Button } from "@/components/ui/button"
 
-const Header = ({ links }: { links: { href: string; lName: string }[] }) => {
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
+import { Separator } from "@/components/ui/separator"
+
+const HamburgerMenu = () => (
+  <div className=" hover:text-muted">
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 15 15"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M1.5 3C1.22386 3 1 3.22386 1 3.5C1 3.77614 1.22386 4 1.5 4H13.5C13.7761 4 14 3.77614 14 3.5C14 3.22386 13.7761 3 13.5 3H1.5ZM1 7.5C1 7.22386 1.22386 7 1.5 7H13.5C13.7761 7 14 7.22386 14 7.5C14 7.77614 13.7761 8 13.5 8H1.5C1.22386 8 1 7.77614 1 7.5ZM1 11.5C1 11.2239 1.22386 11 1.5 11H13.5C13.7761 11 14 11.2239 14 11.5C14 11.7761 13.7761 12 13.5 12H1.5C1.22386 12 1 11.7761 1 11.5Z"
+        fill="currentColor"
+        fillRule="evenodd"
+        clipRule="evenodd"
+      ></path>
+    </svg>
+  </div>
+)
+
+const Header = ({
+  shopName,
+  links,
+  className,
+}: {
+  shopName: string
+  links: { href: string; lName: string }[]
+  className: string
+}) => {
   return (
     <>
-      <nav className=" flex justify-evenly bg-gray-600 py-4 ">
-        <h1>HEADER</h1>
-        {links.map((item, i) => (
-          <Link key={i} href={item.href}>
-            {item.lName}
+      <div className={`flex justify-between  bg-background p-4 ${className}`}>
+        <div className="hidden sm:block">
+          <Link href="/">
+            <Button variant="link" className="">
+              Home
+            </Button>
           </Link>
-        ))}
-      </nav>
+          {links.map((item, i) => (
+            <Link key={i} href={item.href}>
+              <Button variant="link" className="">
+                {item.lName}
+              </Button>
+            </Link>
+          ))}
+        </div>
+        <div className=" sm:hidden">
+          <Sheet>
+            <SheetTrigger>
+              <HamburgerMenu />
+            </SheetTrigger>
+            <SheetContent side="left">
+              <SheetHeader>
+                <SheetTitle>{shopName}</SheetTitle>
+              </SheetHeader>
+              <Link href="/">
+                <SheetClose asChild>
+                  <Button variant="link" className="">
+                    Home
+                  </Button>
+                </SheetClose>
+              </Link>
+              {links.map((item, i) => (
+                <Link key={i} href={item.href}>
+                  <SheetClose asChild>
+                    <Button variant="link" className=" block">
+                      {item.lName}
+                    </Button>
+                  </SheetClose>
+                </Link>
+              ))}
+            </SheetContent>
+          </Sheet>
+        </div>
+        <ModeToggle />
+      </div>
       <Separator />
     </>
   )
