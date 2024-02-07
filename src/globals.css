@@ -19,7 +19,7 @@
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
-    --muted: 210 40% 96.1%;
+    --muted: 210 40% 60%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
     --accent: 210 40% 96.1%;
@@ -66,12 +66,19 @@
   }
 }
 
+
 @layer base {
   * {
     @apply border-border;
   }
   body {
     @apply bg-background text-foreground;
+  }
+  h2 {
+    @apply text-xl uppercase;
+  }
+  h3 {
+    @apply text-lg capitalize;
   }
 }
 @layer utilities {
@@ -88,4 +95,3 @@
     }
   }
 }
-

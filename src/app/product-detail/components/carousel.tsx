@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { useRouter, useParams } from "next/navigation"
 import Link from "next/link"
+import Image from "next/image"
 import { LeftArrow, RightArrow } from "./arrow-buttons"
 
 const NavDots = ({ items, current }: { items: string[]; current: number }) => (
@@ -55,11 +56,13 @@ const Carousel: React.FC<CarouselProps> = ({ imageUrls }) => {
       <div className=" w-screen relative">
         <div className=" flex aspect-[10/10] sm:h-[450px] mx-auto gap-1 overflow-scroll snap-mandatory snap-x no-scrollbar  sm:scroll-smooth">
           {imageUrls.map((imageUrl, i) => (
-            <img
+            <Image
               key={i}
-              id={`item${i}`}
               src={imageUrl}
+              alt={`image number ${i}`}
               className=" w-full left-0 object-cover rounded snap-center"
+              width={400}
+              height={400}
             />
           ))}
         </div>
@@ -76,3 +79,9 @@ const Carousel: React.FC<CarouselProps> = ({ imageUrls }) => {
 }
 
 export default Carousel
+
+            // <img
+            //   id={`item${i}`}
+            //   src={imageUrl}
+            //   className=" w-full left-0 object-cover rounded snap-center"
+            // />

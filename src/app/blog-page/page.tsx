@@ -7,9 +7,7 @@ const Sections = [createBlogSection(fakeData2)]
 
 const AboutUs = () => {
   return (
-    <>
       <BlogPage sections={Sections} />
-    </>
   )
 }
 export default AboutUs

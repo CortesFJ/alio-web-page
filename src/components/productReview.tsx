@@ -45,7 +45,11 @@ export const ReviewCard = ({ review, active }: ReviewCardProps) => {
           <h4 className="name">{review.user.name}</h4>
           <p className="rating">{review.rating} stars</p>
         </div>
-        <time className="date" dateTime={review.createdAt.toISOString()}>
+        <time
+          suppressHydrationWarning={true}
+          className="date"
+          dateTime={review.createdAt.toISOString()}
+        >
           {formattedDate}
         </time>
       </header>
@@ -63,6 +67,7 @@ export const ReviewCard = ({ review, active }: ReviewCardProps) => {
                   <time
                     className="date"
                     dateTime={message.createdAt.toISOString()}
+                    suppressHydrationWarning={true}
                   >
                     {new Date(message.createdAt).toLocaleDateString()}
                   </time>
