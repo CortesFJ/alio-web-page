@@ -28,7 +28,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Header
-            className=""
+            className=" sticky top-0 h-16"
             shopName="alio"
             links={[
               { href: "/blog-page", lName: "About us" },
@@ -36,7 +36,7 @@ export default function RootLayout({
               { href: "/cart", lName: "Cart" },
             ]}
           />
-          <div className="h-screen">{children}</div>
+          {children}
           <Footer />
         </ThemeProvider>
       </body>

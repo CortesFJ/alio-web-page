@@ -15,7 +15,7 @@ describe("CartView component", () => {
     jest.spyOn(cartService, "getState")
     render(<CartView />)
 
-    expect(cartService.getState).toBeCalled()
+    expect(cartService.getState).toHaveBeenCalled()
   })
 
   test("the cart state should be rendered", () => {
@@ -26,8 +26,6 @@ describe("CartView component", () => {
 
     render(<CartView />)
 
-    expect(screen.getByText("Cart Summary"))
-    expect(screen.getByRole("list"))
     expect(screen.getByText(mockedProducts[0].name))
     expect(screen.getByText(mockedProducts[1].name))
     expect(

@@ -41,7 +41,7 @@ const displayOptions = (
                       searchParams.get(variantName) === option
                         ? "bg-rose-300"
                         : "bg-slate-500"
-                    } p-1 rounded cursor-pointer hover:bg-slate-400 transition-colors duration-500 ease-in-out`}
+                    } p-1 rounded cursor-pointer hover:text-secondary transition-colors duration-500 ease-in-out`}
                   >
                     <input
                       className="hidden"

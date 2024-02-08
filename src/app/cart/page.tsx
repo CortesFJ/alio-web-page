@@ -15,16 +15,16 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 
 const EmptyCart = () => (
-  <div>
-    <div className="h-44">
+  <div className="h-screen flex flex-col justify-evenly">
+    <div className="">
       <p>Your cart is empty.</p>
     </div>
-    <Link href="/product-detail">
-      <Button>
+    <Button asChild className="mb-28">
+      <Link href="/product-detail">
         <Store className="mr-2 h-4 w-4" />
         Go to shop
-      </Button>
-    </Link>
+      </Link>
+    </Button>
   </div>
 )
 
@@ -71,106 +71,102 @@ const CartView = () => {
   }
 
   return (
-    <div className=" flex h-full items-center justify-center">
+    <div className=" flex flex-col items-center justify-between">
       {cartState.items.length === 0 ? (
         <EmptyCart />
       ) : (
-        <article className=" shadow shadow-white   text-center ">
-          <header className="my-6">
+        <article className="text-center min-h-[calc(100vh-4rem)] ">
+          <header className="mt-8 mb-12">
             <h2>Shopping Cart</h2>
           </header>
-          <ScrollArea className="h-[400px]">
+          <ScrollArea className="h-[320px]">
             {cartState.items.map((item) => {
               const { newAmount, newCurrency } = updateCurrency(
                 item.product.price
               )
 
               return (
-                <div key={item.product.id}>
-                  <article className="">
-                    <div className="flex ">
-                      <Image
-                        className="rounded"
-                        src={item.product.imageUrls[0]}
-                        alt={`image for ${item.product.name}`}
-                        height={80}
-                        width={80}
-                      />
-                      <div className="flex">
-                        <header className=" text-left mx-4 ">
-                          <h3>
-                            <Link href={createUrlPath(item.product.variants)}>
-                              {item.product.name}
-                            </Link>
-                          </h3>
-                          <p className=" text-muted text-sm ">
-                            {Object.values(item.product.variants).map((v) => (
-                              <span key={v}>{v} </span>
-                            ))}
-                          </p>
-                        </header>
-                        <section className="flex flex-col justify-between gap-8 ">
-                          <div className="flex justify-end">
-                            <Button
-                              variant="outline"
-                              className="h-6 w-6 p-0"
-                              onClick={() =>
-                                cartService.remove(item.product.id)
-                              }
-                            >
-                              <X className="h-4 w-4" />
-                            </Button>
-                          </div>
-                          <div className="mb-2">
-                            <p className="mb-2 text-left">{`${newCurrency.symbol} ${(
-                              newAmount * item.quantity
-                            ).toFixed(2)}`}</p>
-                            <div className="flex h-8 ">
-                              <button
-                                className="bg-secondary px-1 rounded-l"
-                                onClick={() =>
-                                  handleQuantityChange(
-                                    item.product,
-                                    item.quantity - 1
-                                  )
-                                }
-                              >
-                                <Minus className="mx-auto h-4" />
-                              </button>
-                              <input
-                                className="bg-secondary w-6 text-center "
-                                type="text"
-                                readOnly
-                                value={item.quantity}
-                              />
-                              <button
-                                onClick={() =>
-                                  handleQuantityChange(
-                                    item.product,
-                                    item.quantity + 1
-                                  )
-                                }
-                                className="bg-secondary px-1 rounded-r"
-                              >
-                                <Plus className="mx-auto h-4" />
-                              </button>
-                            </div>
-                          </div>
-                        </section>
-                      </div>
+                <div className="mb-2" key={item.product.id}>
+                  <article className=" w-screen px-6 mb-2">
+                    <header className="flex justify-between">
+                      <h3 className="mb-2">
+                        <Link href={createUrlPath(item.product.variants)}>
+                          {item.product.name}
+                        </Link>
+                      </h3>
+                      <Button
+                        variant="outline"
+                        className="h-6 w-6 p-0"
+                        onClick={() => cartService.remove(item.product.id)}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </header>
+                    <div className="flex justify-between">
+                      <section className=" flex">
+                        <Image
+                          className="rounded object-cover mr-2"
+                          src={item.product.imageUrls[0]}
+                          alt={`image for ${item.product.name}`}
+                          height={80}
+                          width={80}
+                        />
+                        <p className=" text-muted text-sm w-min text-left ">
+                          {Object.values(item.product.variants).map((v) => (
+                            <span key={v}>{v} </span>
+                          ))}
+                        </p>
+                      </section>
+                      <section className="flex flex-col justify-end">
+                        <p className="mb-2 text-left">{`${
+                          newCurrency.symbol
+                        } ${(newAmount * item.quantity).toFixed(2)}`}</p>
+                        <div className="flex h-8">
+                          <button
+                            className="bg-secondary px-1 rounded-l"
+                            onClick={() =>
+                              handleQuantityChange(
+                                item.product,
+                                item.quantity - 1
+                              )
+                            }
+                          >
+                            <Minus className="mx-auto h-4" />
+                          </button>
+                          <input
+                            className="bg-secondary w-6 text-center "
+                            type="text"
+                            readOnly
+                            value={item.quantity}
+                          />
+                          <button
+                            onClick={() =>
+                              handleQuantityChange(
+                                item.product,
+                                item.quantity + 1
+                              )
+                            }
+                            className="bg-secondary px-1 rounded-r"
+                          >
+                            <Plus className="mx-auto h-4" />
+                          </button>
+                        </div>
+                      </section>
                     </div>
-                    <Separator />
                   </article>
+                  <Separator />
                 </div>
               )
             })}
           </ScrollArea>
-          <div>
+          <div className=" pt-16 text-lg font-semibold">
             <p>
               Total: {cartState.totalPrice.currency}{" "}
               {cartState.totalPrice.amount}
             </p>
-            <Link href={"/purchase-order"}>continue purchase</Link>
+            <Button asChild className="w-full mt-8 rounded-none font-bold ">
+              <Link href={"/purchase-order"}>continue purchase</Link>
+            </Button>
           </div>
         </article>
       )}

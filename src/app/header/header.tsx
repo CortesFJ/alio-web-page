@@ -14,10 +14,10 @@ import {
 import { Separator } from "@/components/ui/separator"
 
 const HamburgerMenu = () => (
-  <div className=" hover:text-muted">
+  <div className="hover:text-muted">
     <svg
-      width="15"
-      height="15"
+      width="20"
+      height="20"
       viewBox="0 0 15 15"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -43,7 +43,7 @@ const Header = ({
 }) => {
   return (
     <>
-      <div className={`flex justify-between  bg-background p-4 ${className}`}>
+      <div className={`flex justify-between  bg-secondary p-4 ${className}`}>
         <div className="hidden sm:block">
           <Link href="/">
             <Button variant="link" className="">
@@ -58,7 +58,7 @@ const Header = ({
             </Link>
           ))}
         </div>
-        <div className=" sm:hidden">
+        <div className="sm:hidden flex flex-col justify-center">
           <Sheet>
             <SheetTrigger>
               <HamburgerMenu />
