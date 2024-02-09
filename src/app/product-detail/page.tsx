@@ -3,12 +3,14 @@ import { useState, useEffect } from "react"
 import { usePathname, useRouter } from "next/navigation"
 
 import { Product, Variants } from "@/core/product-repository/product"
-import ProductDescription from "./components/product-description"
+import ProductDescription from "./components/product-description/product-description"
 import VariantSelection from "./components/variant-selection"
 import mockedProduct, {
   mockedProducts,
+  mockedWallets,
 } from "../../../testing/mocks/core/product"
 import BuyButton from "./components/buy-button"
+import Carousel from "./components/product-description/carousel"
 
 const haveSameData = (obj1: Variants, obj2: Variants) =>
   Object.keys(obj1).every(
@@ -66,9 +68,11 @@ interface productDetailProps {
 
 const ProductDetail: React.FC<productDetailProps> = ({
   searchParams,
-  products = [...mockedProducts, mockedProduct],
+  // products = mockedWallets,
+  products = [...mockedProducts, ...mockedWallets, mockedProduct],
   updateCurrentOptions = updateOptions,
 }) => {
+
   const [currentProduct, setCurrentProduct] = useState<Product>()
   const [possibleOptions, setPossibleOptions] = useState({})
   const pathname = usePathname()
@@ -119,12 +123,14 @@ const ProductDetail: React.FC<productDetailProps> = ({
   return (
     <>
       {currentProduct ? (
-        <div className="border border-red-600 m-4">
-          <ProductDescription product={currentProduct} />
-          <VariantSelection
-            variantsList={products.map((p) => p.variants)}
-            possibleOptions={possibleOptions}
-          />
+        <div className="px-2">
+          <Carousel imageUrls={currentProduct.imageUrls} />
+          <ProductDescription product={currentProduct}>
+            <VariantSelection
+              variantsList={products.map((p) => p.variants)}
+              possibleOptions={possibleOptions}
+            />
+          </ProductDescription>
           <BuyButton product={currentProduct} />
         </div>
       ) : null}

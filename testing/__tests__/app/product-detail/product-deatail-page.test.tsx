@@ -1,6 +1,6 @@
 import ProductDetail, { exportToTest } from "@/app/product-detail/page"
 import VariantSelection from "@/app/product-detail/components/variant-selection"
-import ProductDescription from "@/app/product-detail/components/product-description"
+import ProductDescription from "@/app/product-detail/components/product-description/product-description"
 import { mockedWallets } from "../../../mocks/core/product"
 
 import { render} from "@testing-library/react"

@@ -66,7 +66,6 @@
   }
 }
 
-
 @layer base {
   * {
     @apply border-border;
@@ -74,11 +73,14 @@
   body {
     @apply bg-background text-foreground;
   }
+  h1 {
+    @apply text-3xl my-8;
+  }
   h2 {
-    @apply text-xl uppercase;
+    @apply text-2xl;
   }
   h3 {
-    @apply text-lg capitalize;
+    @apply text-xl;
   }
 }
 @layer utilities {

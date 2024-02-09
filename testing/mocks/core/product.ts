@@ -7,6 +7,7 @@ const mockedProduct: Product = {
   price: { currency: "USD", amount: "23.00" },
   imageUrls: ["/cafe-01.jpeg", "/cafe-02.jpeg"],
   variants: {
+    cssColor: "hsla(0, 63%, 45%, 1)",
     Color: "Red",
     Size: "Small",
   },
@@ -20,6 +21,7 @@ export const mockedProducts: Product[] = [
     price: { currency: "EUR", amount: "18.50" },
     imageUrls: ["/azul-01.jpeg", "/azul-02.jpeg"],
     variants: {
+      cssColor: "hsla(227, 72%, 40%, 1)",
       Color: "Blue",
       Size: "Medium",
       Genre: "Man",
@@ -37,6 +39,7 @@ export const mockedProducts: Product[] = [
       "https://picsum.photos/600/400?random=1",
     ],
     variants: {
+      cssColor: "hsla(98, 44%, 28%, 1)",
       Color: "Green",
       Size: "Large",
     },
@@ -53,6 +56,7 @@ export const mockedProducts: Product[] = [
       "https://picsum.photos/600/400?random=1",
     ],
     variants: {
+      cssColor: "hsla(98, 44%, 28%, 1)",
       Color: "Green",
       Size: "Small",
     },
@@ -72,7 +76,11 @@ export const mockedWallets: Product[] = [
       "https://picsum.photos/600/400?random=6",
       "https://picsum.photos/600/400?random=1",
     ],
-    variants: { Color: "Brown", Material: "Leather" },
+    variants: {
+      cssColor: "hsla(0, 63%, 45%, 1)",
+      Color: "Red",
+      Material: "Leather",
+    },
     stock: 50,
   },
   {
@@ -86,7 +94,11 @@ export const mockedWallets: Product[] = [
       "https://picsum.photos/600/400?random=7",
       "https://picsum.photos/600/400?random=1",
     ],
-    variants: { Color: "Black", Material: "Aluminum" },
+    variants: {
+      cssColor: "hsla(0, 63%, 45%, 1)",
+      Color: "Red",
+      Material: "Aluminum",
+    },
     stock: 100,
   },
   {
@@ -100,7 +112,11 @@ export const mockedWallets: Product[] = [
       "https://picsum.photos/600/400?random=4",
       "https://picsum.photos/600/400?random=1",
     ],
-    variants: { Color: "Tan", Material: "Canvas" },
+    variants: {
+      cssColor: "hsla(0, 63%, 45%, 1)",
+      Color: "Red",
+      Material: "Canvas",
+    },
     stock: 200,
   },
   {
@@ -114,7 +130,11 @@ export const mockedWallets: Product[] = [
       "https://picsum.photos/600/400?random=8",
       "https://picsum.photos/600/400?random=1",
     ],
-    variants: { Color: "Black", Material: "Stainless Steel" },
+    variants: {
+      cssColor: "hsla(0, 0%, 0%, 1)",
+      Color: "Black",
+      Material: "Stainless Steel",
+    },
     stock: 75,
   },
   {
@@ -128,7 +148,11 @@ export const mockedWallets: Product[] = [
       "https://picsum.photos/600/400?random=3",
       "https://picsum.photos/600/400?random=1",
     ],
-    variants: { Color: "Green", Material: "Recycled PET Leather" },
+    variants: {
+      cssColor: "hsla(227, 72%, 40%, 1)",
+      Color: "Blue",
+      Material: "Recycled PET Leather",
+    },
     stock: 150,
   },
   {
@@ -142,7 +166,11 @@ export const mockedWallets: Product[] = [
       "https://picsum.photos/600/400?random=8",
       "https://picsum.photos/600/400?random=1",
     ],
-    variants: { Color: "Blue", Material: "Recycled PET Leather" },
+    variants: {
+      cssColor: "hsla(227, 72%, 40%, 1)",
+      Color: "Blue",
+      Material: "Recycled PET Leather",
+    },
     stock: 150,
   },
   {
@@ -156,7 +184,11 @@ export const mockedWallets: Product[] = [
       "https://picsum.photos/600/400?random=2",
       "https://picsum.photos/600/400?random=1",
     ],
-    variants: { Color: "Black", Material: "Leather" },
+    variants: {
+      cssColor: "hsla(0, 0%, 0%, 1)",
+      Color: "Black",
+      Material: "Leather",
+    },
     stock: 75,
   },
   {
@@ -170,7 +202,11 @@ export const mockedWallets: Product[] = [
       "https://picsum.photos/600/400?random=4",
       "https://picsum.photos/600/400?random=1",
     ],
-    variants: { Color: "Green", Material: "Leather" },
+    variants: {
+      cssColor: "hsla(98, 44%, 28%, 1)",
+      Color: "Green",
+      Material: "Leather",
+    },
     stock: 150,
   },
   {
@@ -184,7 +220,11 @@ export const mockedWallets: Product[] = [
       "https://picsum.photos/600/400?random=2",
       "https://picsum.photos/600/400?random=1",
     ],
-    variants: { Color: "Blue", Material: "Leather" },
+    variants: {
+      cssColor: "hsla(227, 72%, 40%, 1)",
+      Color: "Blue",
+      Material: "Leather",
+    },
     stock: 150,
   },
 ]

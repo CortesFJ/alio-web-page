@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react"
 
-import ProductDescription from "@/app/product-detail/components/product-description"
+import ProductDescription from "@/app/product-detail/components/product-description/product-description"
 import mockedProduct from "../../../mocks/core/product"
 
 jest.mock("@/app/product-detail/components/carousel")

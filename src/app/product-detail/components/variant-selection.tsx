@@ -1,11 +1,16 @@
+import { Button } from "@/components/ui/button"
 import { Variants } from "@/core/product-repository/product"
 import { useSearchParams, usePathname, useRouter } from "next/navigation"
-
-const displayOptions = (
-  variantName: string,
-  options: string[],
+interface OptionsProps {
+  variantName: string
+  options: string[]
   availableOptions: string | string[]
-) => {
+}
+const Options: React.FC<OptionsProps> = ({
+  variantName,
+  options,
+  availableOptions,
+}) => {
   const pathname = usePathname()
   const { replace } = useRouter()
   const searchParams = useSearchParams()
@@ -22,44 +27,75 @@ const displayOptions = (
     return
   }
 
+  if (variantName === "cssColor") {
+    return (
+      <div className="flex items-center gap-4 w-fit mb-1">
+        <strong>Color</strong>
+        {options.map((option: string, i) => {
+          if (availableOptions === "all" || availableOptions.includes(option)) {
+            return (
+              <label
+                key={option + i}
+                title={option}
+                className={`h-3 w-3 rounded-full ${
+                  searchParams.get(variantName) === option ? "w-5 shadow" : ""
+                }
+                  cursor-pointer hover:border-2 hover:border-gray-700`}
+                style={{ backgroundColor: option }}
+              >
+                <input
+                  className="hidden"
+                  type="radio"
+                  name={variantName}
+                  onChange={() => {
+                    handleVariantSelection(variantName, option)
+                  }}
+                />
+              </label>
+            )
+          }
+        })}
+      </div>
+    )
+  }
+
   return (
-    <li key={variantName}>
-      <h3>{variantName}</h3>
+    <p className="flex items-center gap-4 w-fit mb-1">
+      <strong>{variantName}</strong>
       {options.length === 1 ? (
         <span>{options[0]}</span>
       ) : (
-        <ul>
+        <span>
           {options.map((option: string, i) => {
             if (
               availableOptions === "all" ||
               availableOptions.includes(option)
             ) {
               return (
-                <li key={option + i}>
-                  <label
-                    className={`${
-                      searchParams.get(variantName) === option
-                        ? "bg-rose-300"
-                        : "bg-slate-500"
-                    } p-1 rounded cursor-pointer hover:text-secondary transition-colors duration-500 ease-in-out`}
-                  >
-                    <input
-                      className="hidden"
-                      type="radio"
-                      name={variantName}
-                      onChange={() => {
-                        handleVariantSelection(variantName, option)
-                      }}
-                    />
-                    {option}
-                  </label>
-                </li>
+                <label
+                  key={option + i}
+                  className={`${
+                    searchParams.get(variantName) === option
+                      ? "text-accent "
+                      : ""
+                  } mx-1 cursor-pointer hover:underline `}
+                >
+                  <input
+                    className="hidden"
+                    type="radio"
+                    name={variantName}
+                    onChange={() => {
+                      handleVariantSelection(variantName, option)
+                    }}
+                  />
+                  {option}
+                </label>
               )
             }
           })}
-        </ul>
+        </span>
       )}
-    </li>
+    </p>
   )
 }
 
@@ -92,9 +128,17 @@ const VariantSelection: React.FC<VariantSelectionProps> = ({
 
   const variantsDict = buildVariantDictionary(variantsList)
 
-  return variantsDict.length !== 0 ? (
-    <ul>
+  if (!variantsDict.length) {
+    return
+  }
+
+  return (
+    <div>
       {variantsDict.map(([variantName, options], ind) => {
+        if (variantName === "Color") {
+          return
+        }
+
         const availableOptions: string | string[] =
           ind === 0
             ? "all"
@@ -102,9 +146,16 @@ const VariantSelection: React.FC<VariantSelectionProps> = ({
             ? possibleOptions[variantName]
             : "none"
 
-        return displayOptions(variantName, options, availableOptions)
+        return (
+          <Options
+            key={ind}
+            variantName={variantName}
+            options={options}
+            availableOptions={availableOptions}
+          />
+        )
       })}
-    </ul>
-  ) : null
+    </div>
+  )
 }
 export default VariantSelection
