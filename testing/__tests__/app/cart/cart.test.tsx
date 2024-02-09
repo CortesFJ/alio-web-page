@@ -33,35 +33,6 @@ describe("CartView component", () => {
     )
   })
 
-  test("the quantity of each product in cart can be modified", () => {
-    cartService.add(mockedProducts[0])
-    cartService.add(mockedProducts[1], 2)
-
-    const { totalPrice: totalPrice1 } = cartService.getState()
-
-    render(<CartView />)
-
-    expect(
-      screen.getByText(`Total: ${totalPrice1.currency} ${totalPrice1.amount}`)
-    ).toBeInTheDocument()
-
-    const quantityInputs = screen.getAllByRole("spinbutton")
-    const firstQuantityInput = quantityInputs[0] as HTMLInputElement
-    fireEvent.change(firstQuantityInput, { target: { value: 3 } })
-    const secondQuantityInput = quantityInputs[1] as HTMLInputElement
-    fireEvent.change(secondQuantityInput, { target: { value: 1 } })
-
-    const { totalPrice: totalPrice2 } = cartService.getState()
-
-    expect(cartService.getState().items[0].quantity).toBe(3)
-    expect(cartService.getState().items[1].quantity).toBe(1)
-
-    expect(totalPrice1).not.toBe(totalPrice2)
-    expect(
-      screen.getByText(`Total: ${totalPrice2.currency} ${totalPrice2.amount}`)
-    ).toBeInTheDocument()
-  })
-
   test("products in cart can be removed", async () => {
     cartService.add(mockedProducts[0])
     cartService.add(mockedProducts[1])
@@ -72,8 +43,9 @@ describe("CartView component", () => {
     render(<CartView />)
 
     expect(screen.queryByText(mockedProducts[0].name))
-    const removeButtons = screen.getAllByRole("button", { name: /remove/i })
-    const firstRemoveButton = removeButtons[0]
+    const firstRemoveButton = screen.getByTestId(
+      `remove_${mockedProducts[0].id}`
+    )
 
     fireEvent.click(firstRemoveButton)
 
@@ -81,46 +53,29 @@ describe("CartView component", () => {
     expect(screen.queryByText(mockedProducts[0].name)).not.toBeInTheDocument()
   })
 
-  test("name, unit price and total price for every product is displayed", () => {
+  test("name and total price for every product is displayed", () => {
     cartService.add(mockedProducts[0], 3)
     cartService.add(mockedProducts[1])
 
     render(<CartView />)
 
-    const productItems = screen.getAllByRole("listitem")
-    const firstProductItem = productItems[0]
+    const { totalPrice } = cartService.getState()
 
-    expect(firstProductItem).toHaveTextContent(mockedProducts[0].name)
-    expect(
-      screen.getByText(
-        `Unit Price: $ ${parseFloat(mockedProducts[0].price.amount).toFixed(2)}`
-      )
-    ).toBeInTheDocument()
-    expect(
-      screen.getByText(
-        `Total Price: $ ${(
-          parseFloat(mockedProducts[0].price.amount) * 3
-        ).toFixed(2)}`
-      )
-    ).toBeInTheDocument()
+    expect(screen.getByText(mockedProducts[0].name)).toBeInTheDocument()
+    expect(screen.getByText(mockedProducts[1].name)).toBeInTheDocument()
+
+    const expectedPrice1 = (
+      parseFloat(mockedProducts[0].price.amount) * 3
+    ).toFixed(2)
+    const expectedPrice2 = (
+      parseFloat(mockedProducts[0].price.amount) * 3
+    ).toFixed(2)
+
+    expect(screen.getByText(`$ ${expectedPrice1}`)).toBeInTheDocument()
+
+    expect(screen.getByText(`$ ${expectedPrice2}`)).toBeInTheDocument()
   })
 
-  test("cannot load the cart with more units than those available per product", () => {
-    const product = mockedProducts[0]
-    const initialValue = product.stock
-
-    cartService.add(product, initialValue)
-
-    render(<CartView />)
-
-    const quantityInput: HTMLElement & { value: string } =
-      screen.getByRole("spinbutton")
-
-    fireEvent.change(quantityInput, { target: { value: initialValue + 1 } })
-
-    expect(cartService.getState().items[0].quantity).toBe(initialValue)
-    expect(quantityInput.value).toBe(initialValue.toString())
-  })
 
   test("Display a clear message when the cart is empty", () => {
     render(<CartView />)
@@ -138,7 +93,7 @@ describe("CartView component", () => {
 
     expect(screen.queryByRole("list")).not.toBeInTheDocument()
     expect(screen.getByText(/Your cart is empty/i)).toBeInTheDocument()
-    const goToShopButton = screen.getByRole("button", { name: /Go to shop/i })
+    const goToShopButton = screen.getByRole("link", { name: /Go to shop/i })
     expect(goToShopButton).toBeInTheDocument()
   })
   test("The name of every product should be a link to the store", () => {

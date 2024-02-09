@@ -10,7 +10,9 @@ const ProductDescription = ({ product }: { product: Product }) => {
       <h1 role="heading" aria-level={1}>
         {product.name}
       </h1>
-      <Carousel imageUrls={product.imageUrls} />
+      <div className="  flex justify-center ">
+        <Carousel imageUrls={product.imageUrls} />
+      </div>
       <section>
         <p>{product.description}</p>
         <p>

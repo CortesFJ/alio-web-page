@@ -50,21 +50,11 @@ const CartView = () => {
   }, [])
 
   const handleQuantityChange = (product: Product, quantity: number) => {
-    function displayQuantityLimitWarning() {
-      // TODO
-    }
-
-    function displayQuantityErrorWarning() {
-      // TODO
-    }
-
     if (quantity < 0) {
-      displayQuantityErrorWarning()
       return
     }
 
     if (quantity > product.stock) {
-      displayQuantityLimitWarning()
       quantity = product.stock
     }
     cartService.add(product, quantity)
@@ -95,6 +85,7 @@ const CartView = () => {
                         </Link>
                       </h3>
                       <Button
+                        data-testid={`remove_${item.product.id}`}
                         variant="outline"
                         className="h-6 w-6 p-0"
                         onClick={() => cartService.remove(item.product.id)}
@@ -159,7 +150,7 @@ const CartView = () => {
               )
             })}
           </ScrollArea>
-          <div className=" pt-16 text-lg font-semibold">
+          <div className=" pt-16 mb-10 text-lg font-semibold">
             <p>
               Total: {cartState.totalPrice.currency}{" "}
               {cartState.totalPrice.amount}
