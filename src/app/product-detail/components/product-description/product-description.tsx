@@ -23,7 +23,7 @@ const ProductDescription = ({
         </small>
       </p>
       {children}
-      <div className="pl-4 pr-10 mt-6">
+      <div className="pl-4 pr-10 mt-10">
         <h4>
           <strong>{product.name}</strong>
         </h4>

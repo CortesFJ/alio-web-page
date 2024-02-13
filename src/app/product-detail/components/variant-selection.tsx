@@ -133,7 +133,7 @@ const VariantSelection: React.FC<VariantSelectionProps> = ({
   }
 
   return (
-    <div>
+    <div className=" grid gap-1 mt-4">
       {variantsDict.map(([variantName, options], ind) => {
         if (variantName === "Color") {
           return
