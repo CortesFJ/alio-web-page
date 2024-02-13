@@ -45,9 +45,9 @@ const CarouselView: React.FC<CarouselProps> = ({ imageUrls }) => {
   }, [api])
 
   return (
-    <div className="my-2">
-      <Carousel setApi={setApi}>
-        <CarouselContent>
+    <div className="my-2 grid justify-center">
+      <Carousel setApi={setApi} className=" sm:max-w-[calc(100vh-14rem)] md:max-w-[calc(100vh-8rem)] ">
+        <CarouselContent >
           {imageUrls.map((imageUrl, index) => (
             <CarouselItem key={index}>
               <div className=" flex aspect-[10/10] sm:h-[450px] mx-auto gap-1 overflow-scroll snap-mandatory snap-x no-scrollbar  sm:scroll-smooth">
@@ -62,8 +62,8 @@ const CarouselView: React.FC<CarouselProps> = ({ imageUrls }) => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="invisible sm:visible" />
-        <CarouselNext className="invisible sm:visible" />
+        <CarouselPrevious className="hidden sm:inline-flex" />
+        <CarouselNext className="hidden sm:inline-flex" />
       </Carousel>
       <NavDots items={imageUrls} current={current} />
     </div>

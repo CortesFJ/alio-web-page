@@ -124,7 +124,7 @@ const ProductDetail: React.FC<productDetailProps> = ({
     <>
       {currentProduct ? (
         <div className="px-2">
-          <Carousel imageUrls={currentProduct.imageUrls} />
+          <Carousel  imageUrls={currentProduct.imageUrls} />
           <ProductDescription product={currentProduct}>
             <VariantSelection
               variantsList={products.map((p) => p.variants)}
