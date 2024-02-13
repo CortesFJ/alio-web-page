@@ -9,30 +9,30 @@ export type SectionInfo = {
 
 export type BlogDataContent = {
   title: string
-  content: SectionInfo[]
+  sectionInfo: SectionInfo[]
 }
 
-export interface BlogPageSection {
-  htmlContent: ReactNode
+export interface BlogPageArticle {
   title: string
+  sections: ReactNode
 }
 
-export const createBlogSection = ({
+export const createBlogArticle = ({
   title,
-  content,
-}: BlogDataContent): BlogPageSection => {
-  const Content = (
+  sectionInfo,
+}: BlogDataContent): BlogPageArticle => {
+  const sections = (
     <>
-      {content.map(({ image, paragraphs, subtitle }, idx) => (
-        <section key={idx}>
-          {subtitle ? <h2>{subtitle}</h2> : null}
+      {sectionInfo.map(({ image, paragraphs, subtitle }, idx) => (
+        <section key={idx} className="mb-4">
+          {subtitle ? <h2 className="my-2">{subtitle}</h2> : null}
           <Image
             src={image.url}
             alt={image.description}
-            width={200}
-            height={200}
+            width={500}
+            height={500}
           />
-          <div>
+          <div className="my-2 pl-2 pr-6">
             {paragraphs.map((para, i) => (
               <p key={i}>{para}</p>
             ))}
@@ -41,23 +41,19 @@ export const createBlogSection = ({
       ))}
     </>
   )
-  return { htmlContent: Content, title }
+  return { sections, title }
 }
 
 export interface BlogPageProps {
-  sections: BlogPageSection[]
+  sections: BlogPageArticle[]
 }
 
 const BlogPage: React.FC<BlogPageProps> = ({ sections }) => {
-  try {
-    return sections.map(({ title, htmlContent }: BlogPageSection) => (
-      <article key={title}>
-        <h1>{title}</h1>
-        {htmlContent}
-      </article>
-    ))
-  } catch {
-    return null
-  }
+  return sections.map(({ title, sections }: BlogPageArticle) => (
+    <article key={title} className="p-4">
+      <h1>{title}</h1>
+      {sections}
+    </article>
+  ))
 }
 export default BlogPage

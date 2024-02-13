@@ -2,7 +2,7 @@ import { BlogDataContent } from "@/components/BlogPage"
 
 export const fakeData1: BlogDataContent = {
   title: "Exciting Adventures",
-  content: [
+  sectionInfo: [
     {
       subtitle:"A beautiful landscape",
       image: {
@@ -41,7 +41,7 @@ export const fakeData1: BlogDataContent = {
 
 export const fakeData2: BlogDataContent = {
   title: "A World of Imagination",
-  content: [
+  sectionInfo: [
     {
       subtitle:"A landscape",
       image: {
