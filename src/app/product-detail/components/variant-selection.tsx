@@ -29,8 +29,7 @@ const Options: React.FC<OptionsProps> = ({
 
   if (variantName === "cssColor") {
     return (
-      <div className="flex items-center gap-4 w-fit mb-1">
-        <strong>Color</strong>
+      <div className="flex items-center gap-4 w-fit mb-2">
         {options.map((option: string, i) => {
           if (availableOptions === "all" || availableOptions.includes(option)) {
             return (
@@ -61,7 +60,7 @@ const Options: React.FC<OptionsProps> = ({
 
   return (
     <p className="flex items-center gap-4 w-fit mb-1">
-      <strong>{variantName}</strong>
+      <span className=" font-semibold">{variantName}</span>
       {options.length === 1 ? (
         <span>{options[0]}</span>
       ) : (
@@ -132,8 +131,10 @@ const VariantSelection: React.FC<VariantSelectionProps> = ({
     return
   }
 
+  
   return (
     <div className=" grid gap-1 mt-4">
+      <span>{possibleOptions.Color[0]}</span>
       {variantsDict.map(([variantName, options], ind) => {
         if (variantName === "Color") {
           return

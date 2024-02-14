@@ -103,9 +103,13 @@ const CartView = () => {
                           width={80}
                         />
                         <p className=" text-muted text-sm w-min text-left ">
-                          {Object.values(item.product.variants).map((v) => (
-                            <span key={v}>{v} </span>
-                          ))}
+                          {Object.values(item.product.variants).map((v) => {
+                            if (v.startsWith("hsla(")) {
+                              return
+                            }
+
+                            return <span key={v}>{v} </span>
+                          })}
                         </p>
                       </section>
                       <section className="flex flex-col justify-end">
