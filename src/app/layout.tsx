@@ -31,7 +31,7 @@ export default function RootLayout({
             className=" sticky top-0 h-16"
             shopName="alio"
             links={[
-              { href: "/blog-page", lName: "About us" },
+              { href: "/about-us", lName: "About us" },
               { href: "/product-detail", lName: "Catalogue" },
               { href: "/cart", lName: "Cart" },
             ]}

@@ -38,7 +38,7 @@ export const ReviewCard = ({ review, active }: ReviewCardProps) => {
   return (
     <article
       data-testid={review.id}
-      className={`review-card ${active ? " border border-red-400" : ""}`}
+      className={`review-card grid gap-2 ${active ? "block" : "hidden"} transition-all duration-300`}
     >
       <header>
         <div className="reviewer-info">
@@ -47,7 +47,7 @@ export const ReviewCard = ({ review, active }: ReviewCardProps) => {
         </div>
         <time
           suppressHydrationWarning={true}
-          className="date"
+          className=" text-xs text-muted "
           dateTime={review.createdAt.toISOString()}
         >
           {formattedDate}
@@ -56,7 +56,7 @@ export const ReviewCard = ({ review, active }: ReviewCardProps) => {
       <section className="review-content">
         <p>{review.text}</p>
       </section>
-      {review.messages?.length && (
+      {/* {review.messages?.length && (
         <section className="message-thread">
           <ul>
             {review.messages.map((message, i) => (
@@ -76,10 +76,58 @@ export const ReviewCard = ({ review, active }: ReviewCardProps) => {
             ))}
           </ul>
         </section>
-      )}
+      )} */}
     </article>
   )
 }
+// export const ReviewCard = ({ review, active }: ReviewCardProps) => {
+//   const formattedDate = new Date(review.createdAt).toLocaleDateString()
+
+//   return (
+//     <article
+//       data-testid={review.id}
+//       className={`review-card ${active ? " border border-red-400" : ""}`}
+//     >
+//       <header>
+//         <div className="reviewer-info">
+//           <h4 className="name">{review.user.name}</h4>
+//           <p className="rating">{review.rating} stars</p>
+//         </div>
+//         <time
+//           suppressHydrationWarning={true}
+//           className="date"
+//           dateTime={review.createdAt.toISOString()}
+//         >
+//           {formattedDate}
+//         </time>
+//       </header>
+//       <section className="review-content">
+//         <p>{review.text}</p>
+//       </section>
+//       {review.messages?.length && (
+//         <section className="message-thread">
+//           <ul>
+//             {review.messages.map((message, i) => (
+//               <li key={i} className="message">
+//                 <p className="message-content">{message.text}</p>
+//                 <div className="message-meta">
+//                   <span className="sender">{message.sender}</span>
+//                   <time
+//                     className="date"
+//                     dateTime={message.createdAt.toISOString()}
+//                     suppressHydrationWarning={true}
+//                   >
+//                     {new Date(message.createdAt).toLocaleDateString()}
+//                   </time>
+//                 </div>
+//               </li>
+//             ))}
+//           </ul>
+//         </section>
+//       )}
+//     </article>
+//   )
+// }
 
 interface ReviewListProps {
   reviews: Review[]
@@ -117,8 +165,11 @@ const ReviewList = ({ reviews }: ReviewListProps) => {
   }
 
   return (
-    <section className="review-list" onClick={handleClick}>
-      <div className="review-carousel" ref={carouselRef}>
+    <article className="flex px-2 justify-center" onClick={handleClick}>
+      <button className="" onClick={handlePreviousSlide}>
+        {"<<"}
+      </button>
+      <div className="h-3/4 mx-4 text-center" ref={carouselRef}>
         {reviews.map((review, index) => (
           <ReviewCard
             key={review.id}
@@ -127,9 +178,10 @@ const ReviewList = ({ reviews }: ReviewListProps) => {
           />
         ))}
       </div>
-      <button onClick={handlePreviousSlide}>Previous</button>
-      <button onClick={handleNextSlide}>Next</button>
-    </section>
+      <button className="" onClick={handleNextSlide}>
+        {">>"}
+      </button>
+    </article>
   )
 }
 

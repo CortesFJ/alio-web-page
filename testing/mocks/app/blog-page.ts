@@ -1,12 +1,12 @@
-import { BlogDataContent } from "@/components/BlogPage"
+import { BlogData} from "@/components/BlogPage"
 
-export const fakeData1: BlogDataContent = {
+export const fakeData1: BlogData= {
   title: "Exciting Adventures",
-  sectionInfo: [
+  content: [
     {
-      subtitle:"A beautiful landscape",
+      title:"A beautiful landscape",
       image: {
-        url: "https://picsum.photos/600/400?random=1",
+        url:"/Minions.png",
         description: "A landscape",
       },
       paragraphs: [
@@ -15,7 +15,7 @@ export const fakeData1: BlogDataContent = {
       ],
     },
     {
-      subtitle:"Exploring the unknown",
+      title:"Exploring the unknown",
       image: {
         url: "https://picsum.photos/600/400?random=2",
         description: "Exploring",
@@ -26,7 +26,7 @@ export const fakeData1: BlogDataContent = {
       ],
     },
     {
-      subtitle:"Adventurous",
+      title:"Adventurous",
       image: {
         description: "Adventurous journey",
         url: "https://picsum.photos/600/400?random=3",
@@ -39,11 +39,11 @@ export const fakeData1: BlogDataContent = {
   ],
 }
 
-export const fakeData2: BlogDataContent = {
+export const fakeData2: BlogData= {
   title: "A World of Imagination",
-  sectionInfo: [
+  content: [
     {
-      subtitle:"A landscape",
+      title:"A landscape",
       image: {
         url: "https://picsum.photos/800/400?random=1",
         description: "A mesmerizing landscape",
@@ -54,7 +54,7 @@ export const fakeData2: BlogDataContent = {
       ],
     },
     {
-      subtitle:"Territories",
+      title:"Territories",
       image: {
         url: "https://picsum.photos/800/400?random=2",
         description: "Uncharted territories",
@@ -65,7 +65,7 @@ export const fakeData2: BlogDataContent = {
       ],
     },
     {
-      subtitle:"Epic adventures await",
+      title:"Epic adventures await",
       image: {
         url: "https://picsum.photos/800/400?random=3",
         description: "Epic adventures",

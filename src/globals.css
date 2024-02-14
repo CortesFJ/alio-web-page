@@ -74,13 +74,13 @@
     @apply bg-background text-foreground;
   }
   h1 {
-    @apply text-3xl my-8;
+    @apply text-2xl my-8 uppercase;
   }
   h2 {
-    @apply text-2xl;
+    @apply text-lg uppercase font-semibold;
   }
   h3 {
-    @apply text-xl;
+    @apply font-bold;
   }
 }
 @layer utilities {
