@@ -3,7 +3,7 @@ import type { Review } from "@/components/productReview"
 export const mockReviews: Review[] = [
   {
     id: "1",
-    rating: 5,
+    rating: 4.5,
     text: "Amazing product!",
     user: { name: "Alice", id: "234" },
     createdAt: new Date("2024-01-12"),
