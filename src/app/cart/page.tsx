@@ -113,9 +113,19 @@ const CartView = () => {
                         </p>
                       </section>
                       <section className="flex flex-col justify-end">
-                        <p className="mb-2 text-left">{`${
-                          newCurrency.symbol
-                        } ${(newAmount * item.quantity).toFixed(2)}`}</p>
+                        <p className="mb-2 text-left text-muted font-semibold">
+                          Unit:
+                          <span>
+                            {` ${newCurrency.symbol} ${newAmount.toFixed(2)}`}
+                          </span>
+                        </p>
+                        <p className="mb-2 text-left">
+                          <span>
+                            {`${newCurrency.symbol} ${(
+                              newAmount * item.quantity
+                            ).toFixed(2)}`}
+                          </span>
+                        </p>
                         <div className="flex h-8">
                           <button
                             className="bg-secondary px-1 rounded-l"

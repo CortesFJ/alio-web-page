@@ -70,8 +70,8 @@ export function ReviewCard({ reviews }: { reviews: Review[] }) {
                   <strong className="name">{review.user.name}</strong>
                   <div className="flex justify-center">
                     {[...Array(getIntegerPart(review.rating)).keys()].map(
-                      (_) => (
-                        <Star className=" text-yellow-500 h-5" />
+                      (n) => (
+                        <Star key={n} className=" text-yellow-500 h-5" />
                       )
                     )}
                     {getDecimalPart(review.rating) > 4 ? (
